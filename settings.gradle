@@ -1,0 +1,6 @@
+include ':statistic'
+include ':exchange'
+include ':core'
+include ':network'
+include ':app'
+rootProject.name = "WebSockets"
