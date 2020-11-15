@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import com.tsivileva.nata.core.model.Order
+import com.tsivileva.nata.network.news.BinanceWebSocketListener
+import com.tsivileva.nata.network.news.WebSocketSession
 
 class AskViewModel @ViewModelInject constructor(
     private val getAskUseCase: GetAskUseCase
@@ -20,5 +22,9 @@ class AskViewModel @ViewModelInject constructor(
                 orders.postValue(it)
            }
         }
+    }
+
+    fun subscribeOnAskOrders() {
+        SubscribeOnAskUseCase(BinanceWebSocketListener(), WebSocketSession()).start()
     }
 }

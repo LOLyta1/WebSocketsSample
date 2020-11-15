@@ -28,7 +28,7 @@ class AskFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
         binding.getAskBTN.setOnClickListener {
-            viewModel.subscribeOnOrderBook()
+            viewModel.subscribeOnAskOrders()
         }
     }
     private fun initObservers() {
