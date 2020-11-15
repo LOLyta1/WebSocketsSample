@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 import Dependency
 
@@ -29,14 +31,37 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    flavorDimensions "project"
+    productFlavors {
+        dev {
+            buildConfigField "String", "SOCKET_WEB_API_ENDPOINT", "$socketEndpoint"
+        }
+        prod {
+            buildConfigField "String", "SOCKET_WEB_API_ENDPOINT", "$socketEndpoint"
+        }
+    }
 }
 
 dependencies {
+    implementation project(':core')
+
     implementation Dependency.kotlin
     implementation Dependency.androidCore
 
-    implementation Dependency.scarlet
+    implementation Dependency.hilt
+    kapt Dependency.hiltKapt
+    kapt Dependency.kaptHiltViewModel
 
+    implementation Dependency.okHttp
+    implementation Dependency.okHttpLoggingInterceptor
+
+    implementation Dependency.scarlet
+    implementation Dependency.scarletGsonMessageAdapter
+    implementation Dependency.scarletCoroutinesStreamAdapter
+    implementation Dependency.scarletWebsocketOkHttp
+
+    implementation Dependency.timber
     testImplementation Dependency.JUnit
     androidTestImplementation Dependency.JUnitTest
     androidTestImplementation Dependency.espresso

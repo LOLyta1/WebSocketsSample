@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'androidx.navigation.safeargs.kotlin'
+    id 'dagger.hilt.android.plugin'
 }
 
 import Dependency
@@ -31,12 +34,41 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    flavorDimensions "project"
+    productFlavors {
+        dev {
+        }
+        prod {
+        }
+    }
 }
 
 dependencies {
+    implementation project(':core')
+    implementation project(':network')
+
     implementation Dependency.kotlin
     implementation Dependency.androidCore
+    implementation Dependency.androidCoroutines
+
+    implementation Dependency.hilt
+    kapt Dependency.hiltKapt
+    implementation Dependency.hiltViewModel
+    kapt Dependency.kaptHiltViewModel
+    annotationProcessor Dependency.annotationProcessorHiltViewModel
+
+    implementation Dependency.scarlet
+
     implementation Dependency.material
+
+    implementation Dependency.navigation
+
+    implementation Dependency.timber
     testImplementation Dependency.JUnit
     androidTestImplementation Dependency.JUnitTest
     androidTestImplementation Dependency.espresso

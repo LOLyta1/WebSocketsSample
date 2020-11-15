@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="toBidFragment">com.tsivileva.nata.websockets.bid_fragment</string>
+    <string name="toAskFragment">com.tsivileva.nata.websockets.ask_fragment</string>
+</resources>
