@@ -1,18 +1,20 @@
 package com.tsivileva.nata.ask
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.tsivileva.nata.core.model.Currency
+import com.tsivileva.nata.core.model.webSocket.ConnectionStatus
 import com.tsivileva.nata.statistic.databinding.FragmentAskBinding
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
 @AndroidEntryPoint
 class AskFragment : Fragment() {
-    val viewModel by viewModels<AskViewModel>()
+    private val viewModel by viewModels<AskViewModel>()
     private var _binding: FragmentAskBinding? = null
     private val binding get() = _binding!!
 
@@ -28,12 +30,32 @@ class AskFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
         binding.getAskBTN.setOnClickListener {
-            viewModel.subscribeOnOrderBook()
+            viewModel.setCurrenciesAndConnect(Currency.Bitcoin,Currency.Tether)
+            viewModel.getOrders()
         }
     }
+
     private fun initObservers() {
         viewModel.orders.observe(viewLifecycleOwner) {
             Timber.d("was recieved order: $it")
+        }
+
+        viewModel.subscribeOnConnectionStatus(viewLifecycleOwner).observe(viewLifecycleOwner){
+            when(it){
+                ConnectionStatus.Opened -> {
+                    Timber.d("Connection was opened")
+
+                }
+
+                ConnectionStatus.Closed -> {
+                    Timber.d("Connection was closed")
+                }
+
+                is ConnectionStatus.Failed -> {
+                    Timber.d("Connection is FAILED ${it.error}")
+                    viewModel.disconnect()
+                }
+            }
         }
     }
 

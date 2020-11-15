@@ -13,12 +13,13 @@ public class Dependency {
 
     public static final String OK_HTTP_VERSION = "4.9.0";
     public static final String SCARLET_VERSION = "0.1.11";
-    public static final String SCARLET_ADDONS_VERSION = "0.1.9";
+    public static final String SCARLET_ADDONS_VERSION = "0.1.11";
 
     public static final String TIMBER_VERSION = "4.7.1";
     public static final String JUNIT_VERSION = "4.13.1";
     public static final String JUNIT_TEST_VERSION = "1.1.2";
     public static final String ESPRESSO_VERSION = "3.3.0";
+    private static final String GSON_VERSION = "2.8.6";
 
     public static final String kotlin = "org.jetbrains.kotlin:kotlin-stdlib:" + KOTLIN_VERSION;
     public static final String kotlinSerialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:" + KOTLIN_SERIALIZATION_VERSION;
@@ -35,12 +36,14 @@ public class Dependency {
 
     public static final String material = "com.google.android.material:material:" + MATERIAL_VERSION;
 
+    public static final String gson = "com.google.code.gson:gson:" + GSON_VERSION;
     public static final String okHttp = "com.squareup.okhttp3:okhttp:" + OK_HTTP_VERSION;
     public static final String okHttpLoggingInterceptor = "com.squareup.okhttp3:logging-interceptor:" + OK_HTTP_VERSION;
 
     public static final String scarlet = "com.tinder.scarlet:scarlet:" + SCARLET_VERSION;
     public static final String scarletWebsocketOkHttp = "com.tinder.scarlet:websocket-okhttp:" + SCARLET_ADDONS_VERSION;
     public static final String scarletGsonMessageAdapter = "com.tinder.scarlet:message-adapter-gson:" + SCARLET_ADDONS_VERSION;
+    public static final String scarletLifecycle = "com.tinder.scarlet:lifecycle-android:" + SCARLET_ADDONS_VERSION;
 
     public static final String androidCoroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:" + ANDROID_CORE_VERSION;
     public static final String scarletCoroutinesStreamAdapter = "com.tinder.scarlet:stream-adapter-coroutines:" + SCARLET_ADDONS_VERSION;

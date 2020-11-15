@@ -51,7 +51,6 @@ android {
 dependencies {
     implementation project(':core')
     implementation project(':network')
-
     implementation Dependency.kotlin
     implementation Dependency.androidCore
     implementation Dependency.androidCoroutines

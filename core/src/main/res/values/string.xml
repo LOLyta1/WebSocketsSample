@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bitCoin">BTC</string>
+    <string name="binanceCoin">BNB</string>
+    <string name="ethereum">ETH</string>
+    <string name="tether">USDT</string>
+</resources>

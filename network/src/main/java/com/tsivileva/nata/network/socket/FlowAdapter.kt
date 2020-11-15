@@ -1,4 +1,4 @@
-package com.tsivileva.nata.network
+package com.tsivileva.nata.network.socket
 
 import com.tinder.scarlet.Stream
 import com.tinder.scarlet.StreamAdapter
@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.callbackFlow
 import timber.log.Timber
 import java.lang.reflect.Type
 
-class FlowStreamAdapter<T> : StreamAdapter<T, Flow<T>> {
 
+class FlowStreamAdapter<T> : StreamAdapter<T, Flow<T>> {
     @ExperimentalCoroutinesApi
     override fun adapt(stream: Stream<T>) = callbackFlow<T> {
         stream.start(object : Stream.Observer<T> {
@@ -24,7 +24,6 @@ class FlowStreamAdapter<T> : StreamAdapter<T, Flow<T>> {
             }
 
             override fun onNext(data: T) {
-                Timber.d("$data")
                 if (!isClosedForSend) offer(data)
             }
         })
