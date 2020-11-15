@@ -33,6 +33,10 @@ class AskFragment : Fragment() {
             viewModel.setCurrenciesAndConnect(Currency.Bitcoin,Currency.Tether)
             viewModel.getOrders()
         }
+
+        binding.stopBTN.setOnClickListener {
+            viewModel.disconnect()
+        }
     }
 
     private fun initObservers() {
