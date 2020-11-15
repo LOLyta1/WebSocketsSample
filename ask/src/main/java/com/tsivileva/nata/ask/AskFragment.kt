@@ -28,12 +28,14 @@ class AskFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
         binding.getAskBTN.setOnClickListener {
-            viewModel.subscribeOnAskOrders()
+            viewModel.subscribeOnAskOrders().observe(viewLifecycleOwner){
+                Timber.d("was recieved order: $it")
+            }
         }
     }
     private fun initObservers() {
         viewModel.orders.observe(viewLifecycleOwner) {
-            Timber.d("was recieved order: $it")
+
         }
     }
 

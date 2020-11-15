@@ -9,6 +9,7 @@ import timber.log.Timber
 class BinanceWebSocketListener : WebSocketListener() {
 
     override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
+
         super.onClosed(webSocket, code, reason)
         Timber.d("")
     }
