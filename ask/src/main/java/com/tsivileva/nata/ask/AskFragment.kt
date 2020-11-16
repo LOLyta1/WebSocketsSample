@@ -4,7 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.fragment.app.Fragment
+import com.tsivileva.nata.core.R
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsivileva.nata.core.databinding.FragmentExchangeBinding
@@ -33,8 +37,9 @@ class AskFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         initObservers()
+        initSpinner()
         binding.stopBTN.setOnClickListener {
-            viewModel.disconnect()
+            viewModel.unsubscribe()
         }
     }
 
@@ -50,34 +55,35 @@ class AskFragment : Fragment() {
             when (it) {
                 ConnectionStatus.Opened -> {
                     Timber.d("Connection was opened")
-                    connectToStreamAndGetOrders()
+                    connect(binding.currencySpinner.getCurrencyPair())
+                    subscribeOnOrders()
                 }
 
                 ConnectionStatus.Closed -> {
                     Timber.d("Connection was closed")
-
                 }
 
                 is ConnectionStatus.Failed -> {
-                    Timber.d("Connection is FAILED ${it.error}")
-                    viewModel.disconnect()
+                    viewModel.unsubscribe()
                 }
 
                 is ConnectionStatus.Loading -> {
-                    Timber.d("Connection is Loading")
                     setLoadingState()
                 }
             }
         }
     }
 
-    private fun connectToStreamAndGetOrders() {
+    private fun connect(pair: Pair<Currency, Currency>) {
+        viewModel.setCurrenciesAndConnect(pair.first, pair.second)
+    }
+
+    private fun subscribeOnOrders() {
         try {
             setLoadingState()
-            viewModel.setCurrenciesAndConnect(Currency.Bitcoin, Currency.Tether)
             viewModel.getOrders(viewLifecycleOwner).observe(viewLifecycleOwner) {
                 askAdapter?.addToList(it)
-                Timber.d("was recieved order: $it")
+                binding.currenceRecyclerView.smoothScrollToPosition(askAdapter?.itemCount ?: 0)
             }
         } catch (e: Exception) {
             Timber.d("$e")
@@ -85,21 +91,46 @@ class AskFragment : Fragment() {
         }
     }
 
+
+    fun initSpinner() {
+        val adapter = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.exchange,
+            android.R.layout.simple_dropdown_item_1line
+        )
+        binding.currencySpinner.apply {
+            this.adapter = adapter
+            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                 //   viewModel.release()
+                    askAdapter?.clear()
+                    connect(getCurrencyPair())
+                 //   subscribeOnOrders()
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                }
+            }
+        }
+    }
+
+    private fun Spinner.getCurrencyPair() = when (this.selectedItemPosition) {
+        0 -> Pair(Currency.Bitcoin, Currency.Tether)
+        1 -> Pair(Currency.BinanceCoin, Currency.Bitcoin)
+        2 -> Pair(Currency.Ethereum, Currency.Bitcoin)
+        else -> Pair(Currency.Bitcoin, Currency.Tether)
+    }
+
+
     private fun setLoadingState() {
-
+//TODO: implement this
     }
 
-    override fun onResume() {
-        super.onResume()
-       /* if (!viewModel.isConnected()) {
-            connectToStreamAndGetOrders()
-        }*/
-    }
-
-    override fun onPause() {
-        super.onPause()
-       // viewModel.disconnect()
-    }
 
     override fun onDestroy() {
         super.onDestroy()

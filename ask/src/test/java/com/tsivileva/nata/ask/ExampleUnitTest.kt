@@ -1,4 +1,4 @@
-package com.tsivileva.nata.statistic
+package com.tsivileva.nata.ask
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

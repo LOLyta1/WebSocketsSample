@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.tsivileva.nata.core.entity.Exchange
-import com.tsivileva.nata.statistic.databinding.ItemAskLayoutBinding
-import com.tsivileva.nata.statistic.databinding.ItemAskOddLayoutBinding
+import com.tsivileva.nata.ask.databinding.ItemAskLayoutBinding
+import com.tsivileva.nata.ask.databinding.ItemAskOddLayoutBinding
 
 private const val EVEN_ITEM = 0
 private const val ODD_ITEM = 1
@@ -16,16 +16,13 @@ class AskRecyclerAdapter : RecyclerView.Adapter<AskRecyclerAdapter.AskEvenViewHo
     private val list = mutableListOf<Exchange.Data>()
 
     fun addToList(item: Exchange) {
-
         list.addAll(item.ordersData)
         notifyDataSetChanged()
-       // item.ordersData.forEach {
-        /*  }
-          list.addAll(item.ordersData)
-          notifyItemRangeChanged(
-              list.lastIndex - item.ordersData.count(),
-              list.count()
-          )*/
+    }
+
+    fun clear() {
+        list.clear()
+        notifyDataSetChanged()
     }
 
     override fun getItemViewType(position: Int): Int {

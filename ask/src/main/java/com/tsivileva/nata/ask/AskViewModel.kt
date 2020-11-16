@@ -10,22 +10,22 @@ import com.tsivileva.nata.core.getExchange
 import com.tsivileva.nata.core.model.Currency
 import com.tsivileva.nata.core.webSocket.entity.ConnectionStatus
 import com.tsivileva.nata.core.model.Order
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.*
 import timber.log.Timber
 
 class AskViewModel @ViewModelInject constructor(
     private val getOrderBookUseCase: GetOrderBookUseCase
 ) : ViewModel() {
 
+    private var scope: CoroutineScope? = null
     private var orders: LiveData<Order> = MutableLiveData()
     private var connectionStatus: LiveData<ConnectionStatus> = MutableLiveData()
 
-    fun isConnected()=
+    fun isConnected() =
         getOrderBookUseCase.isConnected
 
     fun setCurrenciesAndConnect(fromCurrency: Currency, toCurrency: Currency) {
-        if(!isConnected()){
+        if (!isConnected()) {
             getOrderBookUseCase.setCurrency(fromCurrency, toCurrency)
             getOrderBookUseCase.connectToServer()
         }
@@ -37,24 +37,31 @@ class AskViewModel @ViewModelInject constructor(
     fun getOrders(lifecycleOwner: LifecycleOwner): LiveData<Exchange> {
         Timber.d("GET OBSERVERS START")
         orders.removeObservers(lifecycleOwner)
-        orders = getOrderBookUseCase.getData(viewModelScope)
+        scope = CoroutineScope(Dispatchers.IO)
+        orders = getOrderBookUseCase.getData(scope!!)
         return Transformations.map(orders) {
             it.getExchange(ExchangeType.Ask)
         }
     }
 
-    fun disconnect() {
-        getOrderBookUseCase.disconnectFromServer()
+    fun unsubscribe() {
+        getOrderBookUseCase.unsubscribe()
     }
 
     fun subscribeOnConnectionStatus(lifecycleOwner: LifecycleOwner): LiveData<ConnectionStatus> {
         connectionStatus.removeObservers(lifecycleOwner)
-        connectionStatus = getOrderBookUseCase.subscribeConnectionStatus(viewModelScope)
+        scope = CoroutineScope(Dispatchers.IO)
+        connectionStatus = getOrderBookUseCase.subscribeConnectionStatus(scope!!)
         return connectionStatus
     }
 
+    fun release() {
+        unsubscribe()
+        scope?.cancel()
+    }
+
     override fun onCleared() {
-        disconnect()
+        release()
         super.onCleared()
     }
 }

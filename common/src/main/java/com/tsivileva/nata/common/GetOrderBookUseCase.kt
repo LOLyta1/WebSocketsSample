@@ -13,14 +13,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
-
-private const val STREAM_TIMEOUT = 7000L
 
 class GetOrderBookUseCase @Inject constructor(
     private val webSocketClient: OrderWebSocketClient,
@@ -46,7 +43,7 @@ class GetOrderBookUseCase @Inject constructor(
         }
     }
 
-    fun disconnectFromServer() {
+    fun unsubscribe() {
         webSocketClient.close()
     }
 
@@ -57,41 +54,28 @@ class GetOrderBookUseCase @Inject constructor(
         scope.launch {
 
             if (isCurrencySet()) {
-                var snapshot =
-                    restClient.loadSnapshot(from!!.getName(context), to!!.getName(context))
-                var previousFirstUpdatedId = 0L
-                var previousLastUpdatedId = 0L
-                var previousOrder = Order()
+                val snapshot =  restClient.loadSnapshot(from!!.getName(context), to!!.getName(context))
 
                 webSocketClient.getStream().map {
                     it.ask = deleteEmpty(it.ask)
                     it.bids = deleteEmpty(it.bids)
-                    previousOrder = it
                     it
                 }.filter {
-                            it.lastUpdateId > snapshot.lastUpdateId + 1
-                    /*it.firstUpdateId != previousFirstUpdatedId &&
-                    it.lastUpdateId != previousLastUpdatedId &&*/
-                    //
-                    //&&   it.lastUpdateId >= snapshot.lastUpdateId + 1
+                    it.lastUpdateId > snapshot.lastUpdateId + 1
+                }.collect {
+                    Timber.d("lastU = ${it.lastUpdateId}, firstU = ${it.firstUpdateId}")
+                    liveData.postValue(it)
                 }
-                    .collect {
-                            Timber.d("ON GET DATA ASK - lastU = ${it.lastUpdateId}, firstU = ${it.firstUpdateId}")
-
-                            liveData.postValue(it)
-                        // delay(STREAM_TIMEOUT)
-                    }
             }
         }
         return liveData
     }
 
     private fun deleteEmpty(list: List<List<String>>): List<List<String>> {
-        val deletedList = list.toSet().filter {
+        return list.toSet().filter {
             val beforePoint = it.last().split(".")[0]
             beforePoint.toInt() > 0
         }.toList()
-        return deletedList
     }
 
     fun subscribeConnectionStatus(scope: CoroutineScope) =

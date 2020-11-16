@@ -32,7 +32,7 @@ class BidViewModel @ViewModelInject constructor(
     }
 
     fun disconnect() {
-        getOrderBookUseCase.disconnectFromServer()
+        getOrderBookUseCase.unsubscribe()
 
     }
 

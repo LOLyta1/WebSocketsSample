@@ -4,4 +4,10 @@
     <string name="binanceCoin">BNB</string>
     <string name="ethereum">ETH</string>
     <string name="tether">USDT</string>
+
+    <string-array name="exchange">
+        <item>BTC/USDT</item>
+        <item>BNB/BTC</item>
+        <item>ETH/BTC</item>
+    </string-array>
 </resources>

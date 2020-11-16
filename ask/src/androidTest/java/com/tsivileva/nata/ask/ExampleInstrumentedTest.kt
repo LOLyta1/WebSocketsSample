@@ -1,4 +1,4 @@
-package com.tsivileva.nata.statistic
+package com.tsivileva.nata.ask
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
