@@ -4,14 +4,16 @@
     <item
         app:showAsAction="ifRoom"
         android:icon="@android:drawable/ic_input_add"
-        android:id="@+id/nav_bid"
-        android:title="bid" />
+        android:id="@+id/menuItemBird"
+        android:title="@string/bid" />
 
     <item
         app:showAsAction="ifRoom"
         android:icon="@android:drawable/ic_delete"
-        android:id="@+id/nav_ask"
-        android:title="ask"/>
+        android:id="@+id/menuItemAsk"
+        android:title="@string/ask"/>
+
+
     <!--
         <item android:id="@+id/details"
             android:title="details"/>-->

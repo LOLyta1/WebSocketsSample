@@ -4,48 +4,52 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsivileva.nata.common.OrderViewModel
+import com.tsivileva.nata.core.databinding.FragmentExchangeBinding
 import com.tsivileva.nata.core.model.Currency
 import com.tsivileva.nata.core.webSocket.entity.ConnectionStatus
 import com.tsivileva.nata.exchange.R
 import com.tsivileva.nata.exchange.databinding.FragmentBidBinding
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import java.lang.Exception
 
 @AndroidEntryPoint
 class BidFragment : Fragment() {
     private val viewModel by viewModels<BidViewModel>()
-    private var _binding: FragmentBidBinding? = null
+    private var _binding: FragmentExchangeBinding? = null
     private val binding get() = _binding!!
+    private val askAdapter: BidRecyclerAdapter? = BidRecyclerAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentBidBinding.inflate(
-            inflater,
-            container,
-            false
-        )// Inflate the layout for this fragment
+        _binding = FragmentExchangeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initRecyclerView()
         initObservers()
-       /* binding.getAskBTN.setOnClickListener {
-            viewModel.setCurrenciesAndConnect(Currency.Bitcoin, Currency.Tether)
-            viewModel.getOrders(viewLifecycleOwner).observe(viewLifecycleOwner) {
-                Timber.d("was recieved order: $it")
-            }
+        initSpinner()
+        binding.stopBTN.setOnClickListener {
+            viewModel.unsubscribe()
+        }
+    }
 
-        }*/
-
-      /*  binding.stopBTN.setOnClickListener {
-            viewModel.disconnect()
-        }*/
+    private fun initRecyclerView() {
+        binding.currenceRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            adapter = askAdapter
+        }
     }
 
     private fun initObservers() {
@@ -53,7 +57,8 @@ class BidFragment : Fragment() {
             when (it) {
                 ConnectionStatus.Opened -> {
                     Timber.d("Connection was opened")
-
+                    connect(binding.currencySpinner.getCurrencyPair())
+                    subscribeOnOrders()
                 }
 
                 ConnectionStatus.Closed -> {
@@ -61,12 +66,71 @@ class BidFragment : Fragment() {
                 }
 
                 is ConnectionStatus.Failed -> {
-                    Timber.d("Connection is FAILED ${it.error}")
-                    viewModel.disconnect()
+                    viewModel.unsubscribe()
+                }
+
+                is ConnectionStatus.Loading -> {
+                    setLoadingState()
                 }
             }
         }
     }
+
+    private fun connect(pair: Pair<Currency, Currency>) {
+        viewModel.setCurrenciesAndConnect(pair.first, pair.second)
+    }
+
+    private fun subscribeOnOrders() {
+        try {
+            setLoadingState()
+            viewModel.getOrders(viewLifecycleOwner).observe(viewLifecycleOwner) {
+                askAdapter?.addToList(it)
+                binding.currenceRecyclerView.smoothScrollToPosition(askAdapter?.itemCount ?: 0)
+            }
+        } catch (e: Exception) {
+            Timber.d("$e")
+            e.printStackTrace()
+        }
+    }
+
+
+    fun initSpinner() {
+        val adapter = ArrayAdapter.createFromResource(
+            requireContext(),
+            com.tsivileva.nata.core.R.array.exchange,
+            android.R.layout.simple_dropdown_item_1line
+        )
+        binding.currencySpinner.apply {
+            this.adapter = adapter
+            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    askAdapter?.clear()
+                    connect(getCurrencyPair())
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                }
+            }
+        }
+    }
+
+    private fun Spinner.getCurrencyPair() = when (this.selectedItemPosition) {
+        0 -> Pair(Currency.Bitcoin, Currency.Tether)
+        1 -> Pair(Currency.BinanceCoin, Currency.Bitcoin)
+        2 -> Pair(Currency.Ethereum, Currency.Bitcoin)
+        else -> Pair(Currency.Bitcoin, Currency.Tether)
+    }
+
+
+    private fun setLoadingState() {
+//TODO: implement this
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()
