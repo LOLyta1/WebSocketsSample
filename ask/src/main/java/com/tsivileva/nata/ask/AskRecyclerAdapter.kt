@@ -17,7 +17,10 @@ class AskRecyclerAdapter : RecyclerView.Adapter<AskRecyclerAdapter.AskEvenViewHo
 
     fun addToList(item: Exchange) {
         list.addAll(item.ordersData)
-        notifyDataSetChanged()
+        notifyItemRangeChanged(
+            list.lastIndex+1 - item.ordersData.count(),
+            item.exchangeSymbol.count()
+        )
     }
 
     fun clear() {
