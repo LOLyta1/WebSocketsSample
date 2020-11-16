@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.tsivileva.nata.core.model.Currency
-import com.tsivileva.nata.core.model.webSocket.ConnectionStatus
+import com.tsivileva.nata.core.webSocket.entity.ConnectionStatus
 import com.tsivileva.nata.statistic.databinding.FragmentAskBinding
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -30,8 +30,11 @@ class AskFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
         binding.getAskBTN.setOnClickListener {
-            viewModel.setCurrenciesAndConnect(Currency.Bitcoin,Currency.Tether)
-            viewModel.getOrders()
+            viewModel.setCurrenciesAndConnect(Currency.Bitcoin, Currency.Tether)
+            viewModel.getOrders(viewLifecycleOwner).observe(viewLifecycleOwner) {
+                Timber.d("was recieved order: $it")
+            }
+
         }
 
         binding.stopBTN.setOnClickListener {
@@ -40,10 +43,6 @@ class AskFragment : Fragment() {
     }
 
     private fun initObservers() {
-        viewModel.orders.observe(viewLifecycleOwner) {
-            Timber.d("was recieved order: $it")
-        }
-
         viewModel.subscribeOnConnectionStatus(viewLifecycleOwner).observe(viewLifecycleOwner){
             when(it){
                 ConnectionStatus.Opened -> {

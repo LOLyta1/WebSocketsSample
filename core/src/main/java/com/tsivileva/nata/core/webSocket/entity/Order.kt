@@ -1,4 +1,4 @@
-package com.tsivileva.nata.core.model
+package com.tsivileva.nata.core.webSocket.entity
 import com.google.gson.annotations.SerializedName
 
 data class Order(

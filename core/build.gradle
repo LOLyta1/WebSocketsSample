@@ -48,6 +48,7 @@ dependencies {
     implementation Dependency.androidCoroutines
     implementation Dependency.material
     implementation Dependency.gson
+    implementation Dependency.okHttp
     implementation Dependency.scarlet
     testImplementation Dependency.JUnit
     androidTestImplementation Dependency.JUnitTest

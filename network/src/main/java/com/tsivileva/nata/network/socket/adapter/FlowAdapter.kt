@@ -1,4 +1,4 @@
-package com.tsivileva.nata.network.socket
+package com.tsivileva.nata.network.socket.adapter
 
 import com.tinder.scarlet.Stream
 import com.tinder.scarlet.StreamAdapter
@@ -7,7 +7,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import timber.log.Timber
 import java.lang.reflect.Type
 
 

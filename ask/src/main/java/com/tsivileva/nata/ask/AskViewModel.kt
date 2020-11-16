@@ -3,39 +3,34 @@ package com.tsivileva.nata.ask
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.tsivileva.nata.core.model.Currency
-import com.tsivileva.nata.core.model.Order
-import com.tsivileva.nata.core.model.webSocket.ConnectionStatus
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import com.tsivileva.nata.core.webSocket.entity.Order
+import com.tsivileva.nata.core.webSocket.entity.ConnectionStatus
 
 class AskViewModel @ViewModelInject constructor(
-    private val getAskUseCase: GetAskUseCase
+    private val getOrderBookUseCase: GetOrderBookUseCase
 ) : ViewModel() {
 
-    var orders = MutableLiveData<Order>()
-
+    private var orders: LiveData<Order> = MutableLiveData()
     private var connectionStatus: LiveData<ConnectionStatus> = MutableLiveData()
 
     fun setCurrenciesAndConnect(fromCurrency: Currency, toCurrency: Currency) {
-        getAskUseCase.setCurrency(fromCurrency, toCurrency)
-        getAskUseCase.connectToServer()
+        getOrderBookUseCase.setCurrency(fromCurrency, toCurrency)
+        getOrderBookUseCase.connectToServer()
     }
 
-    fun getOrders() {
-        viewModelScope.launch {
-            getAskUseCase.getData().collect {
-                orders.postValue(it)
-            }
-        }
+    fun getOrders(lifecycleOwner: LifecycleOwner): LiveData<Order> {
+        orders.removeObservers(lifecycleOwner)
+        orders = getOrderBookUseCase.getData(viewModelScope)
+        return orders
     }
 
     fun disconnect() {
-        getAskUseCase.disconectFromServer()
+        getOrderBookUseCase.disconnectFromServer()
     }
 
     fun subscribeOnConnectionStatus(lifecycleOwner: LifecycleOwner): LiveData<ConnectionStatus> {
         connectionStatus.removeObservers(lifecycleOwner)
-        connectionStatus = getAskUseCase.subscribeConnectionStatus(viewModelScope)
+        connectionStatus = getOrderBookUseCase.subscribeConnectionStatus(viewModelScope)
         return connectionStatus
     }
 

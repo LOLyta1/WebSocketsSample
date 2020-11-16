@@ -1,8 +1,8 @@
-package com.tsivileva.nata.core.model.webSocket
+package com.tsivileva.nata.core.webSocket.entity
 
 import com.google.gson.annotations.SerializedName
 
-const val ORDERS_PATH="@depth"
+const val ORDERS_PATH = "@depth"
 
 data class SocketRequest(
     @SerializedName("id") val id: Int = 1,

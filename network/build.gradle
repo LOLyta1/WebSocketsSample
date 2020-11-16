@@ -36,9 +36,11 @@ android {
     productFlavors {
         dev {
             buildConfigField "String", "SOCKET_WEB_API_ENDPOINT", "$socketEndpoint"
+            buildConfigField "String", "REST_API_ENDPOINT", "$restEndpoint"
         }
         prod {
             buildConfigField "String", "SOCKET_WEB_API_ENDPOINT", "$socketEndpoint"
+            buildConfigField "String", "REST_API_ENDPOINT", "$restEndpoint"
         }
     }
 }
@@ -55,6 +57,8 @@ dependencies {
 
     implementation Dependency.okHttp
     implementation Dependency.okHttpLoggingInterceptor
+    implementation Dependency.retrofit
+    implementation Dependency.retrofitConverter
 
     implementation Dependency.scarlet
     implementation Dependency.scarletGsonMessageAdapter

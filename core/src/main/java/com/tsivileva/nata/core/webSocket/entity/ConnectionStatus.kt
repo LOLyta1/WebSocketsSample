@@ -1,4 +1,4 @@
-package com.tsivileva.nata.core.model.webSocket
+package com.tsivileva.nata.core.webSocket.entity
 
 
 sealed class ConnectionStatus {
