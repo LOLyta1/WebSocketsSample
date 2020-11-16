@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="itemTextSize">16sp</dimen>
+    <dimen name="recyclerItemPadding">8dp</dimen>
+    <dimen name="fragmentContainerPaddingTop">16dp</dimen>
+    <dimen name="fragmentContainerPaddingStart">16dp</dimen>
+    <dimen name="fragmentContainerPaddingEnd">16dp</dimen>
+</resources>

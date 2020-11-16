@@ -1,8 +1,9 @@
-package com.tsivileva.nata.common
+package com.tsivileva.nata.exchange.bid
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import androidx.lifecycle.Transformations
+import com.tsivileva.nata.common.GetOrderBookUseCase
 import com.tsivileva.nata.core.entity.Exchange
 import com.tsivileva.nata.core.entity.ExchangeType
 import com.tsivileva.nata.core.getExchange
@@ -10,7 +11,7 @@ import com.tsivileva.nata.core.model.Currency
 import com.tsivileva.nata.core.webSocket.entity.ConnectionStatus
 import com.tsivileva.nata.core.model.Order
 
-class OrderViewModel @ViewModelInject constructor(
+class BidViewModel @ViewModelInject constructor(
     private val getOrderBookUseCase: GetOrderBookUseCase
 ) : ViewModel() {
 

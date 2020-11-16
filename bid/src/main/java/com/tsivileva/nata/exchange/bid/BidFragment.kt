@@ -16,7 +16,7 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class BidFragment : Fragment() {
-    private val viewModel by viewModels<OrderViewModel>()
+    private val viewModel by viewModels<BidViewModel>()
     private var _binding: FragmentBidBinding? = null
     private val binding get() = _binding!!
 

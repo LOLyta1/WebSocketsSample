@@ -1,8 +1,7 @@
 package com.tsivileva.nata.network.rest
 
 import com.tsivileva.nata.core.NetworkClient
-import com.tsivileva.nata.core.model.Currency
-import com.tsivileva.nata.core.rest.entity.OrderSnapshot
+import com.tsivileva.nata.core.model.OrderSnapshot
 import java.lang.IllegalArgumentException
 import java.util.*
 

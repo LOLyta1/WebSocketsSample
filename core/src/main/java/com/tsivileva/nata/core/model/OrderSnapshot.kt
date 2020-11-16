@@ -1,4 +1,4 @@
-package com.tsivileva.nata.core.rest.entity
+package com.tsivileva.nata.core.model
 
 
 import com.google.gson.annotations.SerializedName

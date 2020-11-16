@@ -10,5 +10,5 @@
         android:id="@+id/askFragment"
         android:name="com.tsivileva.nata.ask.AskFragment"
         android:label="fragment_ask"
-        tools:layout="@layout/fragment_ask" />
+        tools:layout="@layout/fragment_exchange" />
 </navigation>

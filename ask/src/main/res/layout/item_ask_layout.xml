@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/amountTV"
+        style="@style/TextView.RecyclerItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        tools:text="0035287" />
+
+    <TextView
+        android:id="@+id/priceTV"
+        style="@style/TextView.RecyclerItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        android:textColor="@android:color/holo_red_light"
+        tools:text="0035287" />
+
+    <TextView
+        android:id="@+id/totalTV"
+        style="@style/TextView.RecyclerItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        tools:text="0035287" />
+</LinearLayout>

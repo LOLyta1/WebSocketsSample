@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.tinder.scarlet.WebSocket
 import com.tsivileva.nata.core.model.Currency
 import com.tsivileva.nata.core.NetworkClient
-import com.tsivileva.nata.core.webSocket.entity.Order
+import com.tsivileva.nata.core.model.Order
 import com.tsivileva.nata.core.webSocket.entity.WebSocketCommand
 import com.tsivileva.nata.core.webSocket.entity.ConnectionStatus
 import com.tsivileva.nata.core.webSocket.entity.SocketRequest
@@ -62,6 +62,7 @@ class OrderWebSocketClient(
                 if (it is WebSocket.Event.OnConnectionOpened<*>) {
                     Timber.d("STATE OnConnectionOpened")
                     statusLiveData.postValue(ConnectionStatus.Opened)
+                    isConnected = true
                 }
 
 
@@ -82,7 +83,7 @@ class OrderWebSocketClient(
                 }
 
                 if (it is WebSocket.Event.OnMessageReceived) {
-                    Timber.d("STATE OnConnectionClosed")
+                    Timber.d("STATE OnMessageReceived")
                 }
             }
         }
