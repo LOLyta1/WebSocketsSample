@@ -26,7 +26,7 @@ class OrderWebSocketClient(
     fun setParams(
         fromCurrency: Currency,
         toCurrency: Currency,
-        apiPath:String,
+        apiPath: String,
         context: Context
     ) {
         val param = fromCurrency.getName(context) +
@@ -43,17 +43,30 @@ class OrderWebSocketClient(
         api.sendRequest(request)
     }
 
+    override fun createRequest(command: WebSocketCommand, params: List<String>): SocketRequest {
+        val lowerCaseParams = params.map {
+            it.toLowerCase(Locale.ROOT)
+        }
+        val request = SocketRequest(
+            method = command.name,
+            params = lowerCaseParams
+        )
+        Timber.d("REQUEST = $request")
+        return request
+    }
 
     override fun subscribeOnConnectionStatus(scope: CoroutineScope): LiveData<ConnectionStatus> {
         val statusLiveData = MutableLiveData<ConnectionStatus>()
         scope.launch {
             api.observeWebSocketEvent().collect {
                 if (it is WebSocket.Event.OnConnectionOpened<*>) {
+                    Timber.d("STATE OnConnectionOpened")
                     statusLiveData.postValue(ConnectionStatus.Opened)
                 }
 
 
                 if (it is WebSocket.Event.OnConnectionFailed) {
+                    Timber.d("STATE OnConnectionFailed")
                     statusLiveData.postValue(
                         ConnectionStatus.Failed(
                             error = it.throwable.message ?: ""
@@ -63,33 +76,26 @@ class OrderWebSocketClient(
                 }
 
                 if (it is WebSocket.Event.OnConnectionClosed) {
+                    Timber.d("STATE OnConnectionClosed")
                     statusLiveData.postValue(ConnectionStatus.Closed)
                     isConnected = false
+                }
+
+                if (it is WebSocket.Event.OnMessageReceived) {
+                    Timber.d("STATE OnConnectionClosed")
                 }
             }
         }
         return statusLiveData
     }
 
+    override fun getStream(): Flow<Order> =
+        api.observeOrdersTicker()
+
     override fun close() {
         val request = createRequest(WebSocketCommand.Unsubscribe, params)
         api.sendRequest(request)
     }
 
-
-    override fun createRequest(command: WebSocketCommand, params: List<String>): SocketRequest {
-        val lowerCaseParams = params.map {
-            it.toLowerCase(Locale.ROOT)
-        }
-       val request = SocketRequest(
-            method = command.name,
-            params = lowerCaseParams
-        )
-        Timber.d("REQUEST = $request")
-        return request
-    }
-
-    override fun getStream(): Flow<Order> =
-        api.observeOrdersTicker()
 
 }

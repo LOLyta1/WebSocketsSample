@@ -1,12 +1,13 @@
-package com.tsivileva.nata.ask
+package com.tsivileva.nata.common
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
+import com.tsivileva.nata.common.GetOrderBookUseCase
 import com.tsivileva.nata.core.model.Currency
-import com.tsivileva.nata.core.webSocket.entity.Order
 import com.tsivileva.nata.core.webSocket.entity.ConnectionStatus
+import com.tsivileva.nata.core.webSocket.entity.Order
 
-class AskViewModel @ViewModelInject constructor(
+class OrderViewModel @ViewModelInject constructor(
     private val getOrderBookUseCase: GetOrderBookUseCase
 ) : ViewModel() {
 
@@ -14,8 +15,8 @@ class AskViewModel @ViewModelInject constructor(
     private var connectionStatus: LiveData<ConnectionStatus> = MutableLiveData()
 
     fun setCurrenciesAndConnect(fromCurrency: Currency, toCurrency: Currency) {
-        getOrderBookUseCase.setCurrency(fromCurrency, toCurrency)
-        getOrderBookUseCase.connectToServer()
+            getOrderBookUseCase.setCurrency(fromCurrency, toCurrency)
+            getOrderBookUseCase.connectToServer()
     }
 
     fun getOrders(lifecycleOwner: LifecycleOwner): LiveData<Order> {
@@ -26,6 +27,7 @@ class AskViewModel @ViewModelInject constructor(
 
     fun disconnect() {
         getOrderBookUseCase.disconnectFromServer()
+
     }
 
     fun subscribeOnConnectionStatus(lifecycleOwner: LifecycleOwner): LiveData<ConnectionStatus> {

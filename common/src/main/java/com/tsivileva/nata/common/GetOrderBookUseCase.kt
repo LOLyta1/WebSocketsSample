@@ -1,4 +1,4 @@
-package com.tsivileva.nata.ask
+package com.tsivileva.nata.common
 
 import android.content.Context
 import androidx.lifecycle.LiveData
@@ -10,12 +10,15 @@ import com.tsivileva.nata.network.rest.OrderRestClient
 import com.tsivileva.nata.network.socket.OrderWebSocketClient
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
+
+private const val STREAM_TIMEOUT = 5000L
 
 class GetOrderBookUseCase @Inject constructor(
     private val webSocketClient: OrderWebSocketClient,
@@ -56,8 +59,9 @@ class GetOrderBookUseCase @Inject constructor(
                         it.ask = deleteEmpty(it.ask)
                         it.bids = deleteEmpty(it.bids)
                         it
-                    }.collect { streamOrder: Order ->
-                        liveData.postValue(streamOrder)
+                    }.collect {
+                        liveData.postValue(it)
+                        delay(STREAM_TIMEOUT)
                     }
             }
         }

@@ -50,6 +50,7 @@ dependencies {
     implementation project(':bid')
     implementation project(':ask')
     implementation project(':network')
+    implementation project(':common')
 
     implementation Dependency.kotlin
     implementation Dependency.androidCore

@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/ask" />
             <option value="$PROJECT_DIR$/bid" />
             <option value="$PROJECT_DIR$/buildSrc" />
+            <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/network" />
           </set>
