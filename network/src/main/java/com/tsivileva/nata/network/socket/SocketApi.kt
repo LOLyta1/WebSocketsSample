@@ -9,11 +9,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface SocketApi {
     @Receive
-    fun observeWebSocketEvent(): Flow<WebSocket.Event>
+    fun observeOnSocketEvent(): Flow<WebSocket.Event>
 
     @Send
     fun sendRequest(socket: SocketRequest)
 
     @Receive
-    fun observeOrdersTicker(): Flow<Order>
+    fun observeOnOrderStream(): Flow<Order>
 }
