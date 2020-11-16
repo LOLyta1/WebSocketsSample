@@ -2,7 +2,7 @@ package com.tsivileva.nata.network.rest
 
 import retrofit2.http.GET
 import retrofit2.http.Query
-import com.tsivileva.nata.core.model.OrderSnapshot
+import com.tsivileva.nata.core.model.dto.OrderSnapshot
 
 interface RestApi {
     @GET("api/v3/depth")

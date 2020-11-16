@@ -6,10 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import com.tinder.scarlet.WebSocket
 import com.tsivileva.nata.core.model.Currency
 import com.tsivileva.nata.core.NetworkClient
-import com.tsivileva.nata.core.model.Order
-import com.tsivileva.nata.core.webSocket.entity.WebSocketCommand
-import com.tsivileva.nata.core.webSocket.entity.ConnectionStatus
-import com.tsivileva.nata.core.webSocket.entity.SocketRequest
+import com.tsivileva.nata.core.model.dto.Order
+import com.tsivileva.nata.core.model.dto.WebSocketCommand
+import com.tsivileva.nata.core.model.ConnectionStatus
+import com.tsivileva.nata.core.model.dto.SocketRequest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect

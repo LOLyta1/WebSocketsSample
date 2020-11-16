@@ -1,6 +1,4 @@
-include ':common'
-include ':ask'
-include ':bid'
+include ':exchange'
 include ':core'
 include ':network'
 include ':app'

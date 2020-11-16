@@ -36,23 +36,4 @@
             android:layout_gravity="center" />
     </FrameLayout>
 
-    <!--TODO: Delete this: -->
-    <Button
-        android:id="@+id/getAskBTN"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="GET ASK"
-        android:textSize="24sp"
-        android:visibility="gone" />
-
-    <Button
-        android:id="@+id/stopBTN"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:text="STOP ASK"
-        android:textSize="24sp"
-        android:visibility="gone" />
-
 </FrameLayout>

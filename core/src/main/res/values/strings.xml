@@ -2,4 +2,5 @@
 <resources>
     <string name="ask">Аsk</string>
     <string name="bid">Bid</string>
+    <string name="diff">Diff</string>
 </resources>

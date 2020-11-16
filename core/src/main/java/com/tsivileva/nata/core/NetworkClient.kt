@@ -1,9 +1,9 @@
 package com.tsivileva.nata.core
 
 import androidx.lifecycle.LiveData
-import com.tsivileva.nata.core.webSocket.entity.WebSocketCommand
-import com.tsivileva.nata.core.webSocket.entity.ConnectionStatus
-import com.tsivileva.nata.core.webSocket.entity.SocketRequest
+import com.tsivileva.nata.core.model.dto.WebSocketCommand
+import com.tsivileva.nata.core.model.ConnectionStatus
+import com.tsivileva.nata.core.model.dto.SocketRequest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 
