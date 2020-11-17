@@ -5,6 +5,7 @@ import com.tsivileva.nata.core.NetworkClient
 import com.tsivileva.nata.core.model.dto.Order
 import com.tsivileva.nata.core.model.dto.SocketRequest
 import kotlinx.coroutines.flow.Flow
+import timber.log.Timber
 
 class OrderWebSocketClient(
     private val api: SocketApi
@@ -12,8 +13,9 @@ class OrderWebSocketClient(
 
     override fun subscribeOnSocketEvent(): Flow<WebSocket.Event> = api.subscribeOnConnection()
 
-    override fun sendRequest(socket: SocketRequest) {
-        api.sendRequest(socket)
+    override fun sendRequest(request: SocketRequest) {
+        Timber.d("SendRequest = $request")
+        api.sendRequest(request)
     }
 
     override fun getData(): Flow<Order> = api.getData()

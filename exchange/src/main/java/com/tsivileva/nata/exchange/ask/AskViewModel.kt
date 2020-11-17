@@ -33,7 +33,7 @@ class AskViewModel @ViewModelInject constructor(
     @InternalCoroutinesApi
     fun getOrders(currencies: Pair<Currency, Currency>): LiveData<Exchange> {
         viewModelScope.launch {
-            getOrdersUseCase.subscribeOnStream(currencies).collect {
+            getOrdersUseCase.subscribeOnStream(currencies,1).collect {
                 orders.postValue(it.getExchange(ExchangeType.Ask))
             }
 

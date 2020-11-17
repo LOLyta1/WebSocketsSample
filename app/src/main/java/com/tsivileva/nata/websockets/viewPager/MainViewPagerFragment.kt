@@ -10,6 +10,7 @@ import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_IDLE
 import com.tsivileva.nata.exchange.ask.AskFragment
 import com.tsivileva.nata.exchange.bid.BidFragment
+import com.tsivileva.nata.exchange.com.tsivileva.nata.exchange.PagerLifecycleObserver
 import com.tsivileva.nata.exchange.statistic.StatisticFragment
 import com.tsivileva.nata.websockets.R
 import com.tsivileva.nata.websockets.databinding.FragmentMainViewPagerBinding
@@ -24,25 +25,31 @@ class MainViewPagerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentMainViewPagerBinding.inflate(inflater, container, false)
+
         val fragmentList = listOf(
-            BidFragment(),
-            AskFragment(),
-            StatisticFragment()
+            BidFragment().apply {
+               lifecycle.addObserver(PagerLifecycleObserver(this))
+            },
+            AskFragment().apply {
+                lifecycle.addObserver(PagerLifecycleObserver(this))
+            },
+            StatisticFragment().apply {
+                lifecycle.addObserver(PagerLifecycleObserver(this))
+            },
         )
 
-        binding.pager.adapter =
-            MainPagerAdapter(fragmentList, requireActivity().supportFragmentManager, lifecycle)
+        binding.pager.adapter =  MainPagerAdapter(fragmentList, requireActivity().supportFragmentManager, lifecycle)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.bottomNavView.setOnNavigationItemSelectedListener {
-            when (it.itemId) {
+           /* when (it.itemId) {
                 R.id.menuItemBid -> runOnTimer { binding.pager.currentItem = 0 }
                 R.id.menuItemAsk -> runOnTimer { binding.pager.currentItem = 1 }
                 R.id.menuItemDiff -> runOnTimer { binding.pager.currentItem = 2 }
-            }
+            }*/
             true
         }
 
@@ -51,12 +58,12 @@ class MainViewPagerFragment : Fragment() {
                 override fun onPageScrollStateChanged(state: Int) {
                     super.onPageScrollStateChanged(state)
                     if (state == SCROLL_STATE_IDLE) {
-                        when (binding.pager.currentItem) {
+                     /*   when (binding.pager.currentItem) {
                             0 -> binding.bottomNavView.selectedItemId = R.id.menuItemBid
                             1 -> binding.bottomNavView.selectedItemId = R.id.menuItemAsk
                             2 -> binding.bottomNavView.selectedItemId = R.id.menuItemDiff
-                        }
-                        binding.bottomNavView.isSelected = true
+                        }*/
+                       // binding.bottomNavView.isSelected = true
                     }
                 }
             }

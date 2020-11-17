@@ -20,17 +20,22 @@ class GetOrdersUseCase @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
     private var params = ""
+    private var subscriberId: Int = 0
 
     @InternalCoroutinesApi
     suspend fun subscribeOnStream(
-        currencies: Pair<Currency, Currency>
+        currencies: Pair<Currency, Currency>,
+        subscriberId: Int
     ): Flow<Order> {
+        this.subscriberId = subscriberId
         params = WebSocketUtils.createOrderRequestString(
             currencies,
             context,
-            WEB_SOCKET_ENDPOINT_ORDERS_PATH)
+            WEB_SOCKET_ENDPOINT_ORDERS_PATH
+        )
 
         val request = WebSocketUtils.createRequest(
+            subscriberId,
             WebSocketCommand.Subscribe,
             listOf(params)
         )
@@ -41,8 +46,9 @@ class GetOrdersUseCase @Inject constructor(
     fun subscribeOnSocketEvent() =
         repository.subscribeOnSocketEvent()
 
-    fun unsubscribe(){
+    fun unsubscribe() {
         val request = WebSocketUtils.createRequest(
+            subscriberId,
             WebSocketCommand.Unsubscribe,
             listOf(params)
         )

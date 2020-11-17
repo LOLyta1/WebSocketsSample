@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsivileva.nata.core.databinding.FragmentExchangeBinding
 import com.tsivileva.nata.core.model.ConnectionStatus
 import com.tsivileva.nata.core.model.Currency
+import com.tsivileva.nata.exchange.databinding.FragmentStatisticBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.InternalCoroutinesApi
 import timber.log.Timber
@@ -22,7 +23,7 @@ import java.lang.Exception
 @AndroidEntryPoint
 class StatisticFragment : Fragment() {
     private val viewModel by viewModels<StatisticViewModel>()
-    private var _binding: FragmentExchangeBinding? = null
+    private var _binding: FragmentStatisticBinding? = null
     private val binding get() = _binding!!
     private val askAdapter: StatisticRecyclerAdapter? = StatisticRecyclerAdapter()
 
@@ -45,7 +46,7 @@ class StatisticFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentExchangeBinding.inflate(inflater, container, false)
+        _binding = FragmentStatisticBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -90,6 +91,7 @@ class StatisticFragment : Fragment() {
             setLoadingState()
             val currencies = binding.currencySpinner.getCurrencyPair()
             viewModel.getStatistic(currencies).observe(viewLifecycleOwner) {
+                Timber.d("RECIEVED STATISTIC = ${it.data}")
                 askAdapter?.addToList(it)
                 binding.currenceRecyclerView.smoothScrollToPosition(askAdapter?.itemCount ?: 0)
             }

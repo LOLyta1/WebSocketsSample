@@ -18,6 +18,7 @@ object WebSocketUtils {
     }
 
     fun createRequest(
+        subscriberId: Int,
         command: WebSocketCommand,
         params: List<String> = emptyList()
     ): SocketRequest {
@@ -25,6 +26,7 @@ object WebSocketUtils {
             it.toLowerCase(Locale.ROOT)
         }
         return SocketRequest(
+            id = subscriberId,
             method = command.name,
             params = lowerCaseParams
         )

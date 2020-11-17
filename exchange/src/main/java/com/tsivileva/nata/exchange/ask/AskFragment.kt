@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsivileva.nata.core.databinding.FragmentExchangeBinding
 import com.tsivileva.nata.core.model.Currency
 import com.tsivileva.nata.core.model.ConnectionStatus
+import com.tsivileva.nata.exchange.databinding.FragmentAskBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.InternalCoroutinesApi
 import timber.log.Timber
@@ -23,7 +24,7 @@ import java.lang.Exception
 @AndroidEntryPoint
 class AskFragment : Fragment() {
     val viewModel by viewModels<AskViewModel>()
-    private var _binding: FragmentExchangeBinding? = null
+    private var _binding: FragmentAskBinding? = null
     private val binding get() = _binding!!
     private val askAdapter: AskRecyclerAdapter? = AskRecyclerAdapter()
 
@@ -31,7 +32,7 @@ class AskFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentExchangeBinding.inflate(inflater, container, false)
+        _binding = FragmentAskBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -77,6 +78,7 @@ class AskFragment : Fragment() {
             setLoadingState()
             val currencies = binding.currencySpinner.getCurrencyPair()
             viewModel.getOrders(currencies).observe(viewLifecycleOwner) {
+                Timber.d("RECIEVED ASK = ${it.exchangeSymbol}")
                 askAdapter?.addToList(it)
                 binding.currenceRecyclerView.smoothScrollToPosition(askAdapter?.itemCount ?: 0)
             }
@@ -125,6 +127,11 @@ class AskFragment : Fragment() {
 //TODO: implement this
     }
 
+    @InternalCoroutinesApi
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        subscribeOnOrders()
+    }
 
     override fun onDetach() {
         super.onDetach()

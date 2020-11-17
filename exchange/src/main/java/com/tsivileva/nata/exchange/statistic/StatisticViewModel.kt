@@ -28,7 +28,7 @@ class StatisticViewModel @ViewModelInject constructor(
     @InternalCoroutinesApi
     fun getStatistic(currencies: Pair<Currency, Currency>): LiveData<Statistic> {
         viewModelScope.launch {
-            getOrdersUseCase.subscribeOnStream(currencies).collect {
+            getOrdersUseCase.subscribeOnStream(currencies,3).collect {
                 statistic.postValue(it.getStatistic())
             }
         }

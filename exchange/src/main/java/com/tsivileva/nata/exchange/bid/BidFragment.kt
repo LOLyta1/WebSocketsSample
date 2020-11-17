@@ -15,6 +15,7 @@ import com.tsivileva.nata.core.R
 import com.tsivileva.nata.core.databinding.FragmentExchangeBinding
 import com.tsivileva.nata.core.model.Currency
 import com.tsivileva.nata.core.model.ConnectionStatus
+import com.tsivileva.nata.exchange.databinding.FragmentBidBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.InternalCoroutinesApi
 import timber.log.Timber
@@ -23,7 +24,7 @@ import java.lang.Exception
 @AndroidEntryPoint
 class BidFragment : Fragment() {
     private val viewModel by viewModels<BidViewModel>()
-    private var _binding: FragmentExchangeBinding? = null
+    private var _binding: FragmentBidBinding? = null
     private val binding get() = _binding!!
     private val askAdapter: BidRecyclerAdapter? = BidRecyclerAdapter()
 
@@ -31,7 +32,7 @@ class BidFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentExchangeBinding.inflate(inflater, container, false)
+        _binding = FragmentBidBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -78,6 +79,7 @@ class BidFragment : Fragment() {
             setLoadingState()
             val currencies = binding.currencySpinner.getCurrencyPair()
             viewModel.getOrders(currencies).observe(viewLifecycleOwner) {
+                Timber.d("RECIEVED BID = ${it.exchangeSymbol}")
                 askAdapter?.addToList(it)
                 binding.currenceRecyclerView.smoothScrollToPosition(askAdapter?.itemCount ?: 0)
             }

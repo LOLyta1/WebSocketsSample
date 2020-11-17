@@ -1,5 +1,7 @@
 package com.tsivileva.nata.websockets.viewPager
 
+import android.view.View
+import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
