@@ -15,7 +15,10 @@ import com.tsivileva.nata.core.R
 import com.tsivileva.nata.core.databinding.FragmentExchangeBinding
 import com.tsivileva.nata.core.model.Currency
 import com.tsivileva.nata.core.model.ConnectionStatus
+import com.tsivileva.nata.core.model.NetworkResponse
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.InternalCoroutinesApi
 import timber.log.Timber
 import java.lang.Exception
@@ -35,14 +38,14 @@ class BidFragment : Fragment() {
         return binding.root
     }
 
+    @ExperimentalCoroutinesApi
     @InternalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        initObservers()
         initSpinner()
-        subscribeOnOrders()
     }
+
 
     private fun initRecyclerView() {
         binding.currenceRecyclerView.apply {
@@ -51,39 +54,31 @@ class BidFragment : Fragment() {
         }
     }
 
-
-    @InternalCoroutinesApi
-    private fun initObservers() {
-        viewModel.subscribeOnEvents().observe(viewLifecycleOwner) {
-            when (it) {
-                ConnectionStatus.Opened -> {
-                    Timber.d("Connection was opened")
-                    subscribeOnOrders()
-                }
-
-                ConnectionStatus.Closed -> {
-                    Timber.d("Connection was closed")
-                }
-
-                is ConnectionStatus.Failed -> {
-                    viewModel.unsubscribe()
-                }
-            }
-        }
-    }
-
+    @FlowPreview
+    @ExperimentalCoroutinesApi
     @InternalCoroutinesApi
     private fun subscribeOnOrders() {
-        try {
-            setLoadingState()
-            val currencies = binding.currencySpinner.getCurrencyPair()
-            viewModel.getOrders(currencies).observe(viewLifecycleOwner) {
-                askAdapter?.addToList(it)
-                binding.currenceRecyclerView.smoothScrollToPosition(askAdapter?.itemCount ?: 0)
+        setLoadingState()
+        val currencies = binding.currencySpinner.getCurrencyPair()
+        viewModel.getOrders(currencies).observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResponse.Loading -> {
+                    // TODO()
+                    Timber.d("Loading")
+                }
+
+                is NetworkResponse.Successful -> {
+                    askAdapter?.addToList(it.data)
+                    binding.currenceRecyclerView.smoothScrollToPosition(askAdapter?.itemCount ?: 0)
+                    Timber.d("Successful")
+
+                }
+
+                is NetworkResponse.Error -> {
+                    Timber.d("Error ${it.message}")
+                }
             }
-        } catch (e: Exception) {
-            Timber.d("$e")
-            e.printStackTrace()
+
         }
     }
     //TODO: вынести в extension
@@ -104,8 +99,9 @@ class BidFragment : Fragment() {
                     position: Int,
                     id: Long
                 ) {
-                    askAdapter?.clear()
-                    viewModel.getOrders(getCurrencyPair())
+                   // askAdapter?.clear()
+                    //viewModel.unsubscribe()
+                    //viewModel.getOrders(getCurrencyPair())
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -126,10 +122,21 @@ class BidFragment : Fragment() {
 //TODO: implement this
     }
 
-
-    override fun onDetach() {
-        super.onDetach()
-        viewModel.unsubscribe()
+    @InternalCoroutinesApi
+    override fun onAttachFragment(childFragment: Fragment) {
+        super.onAttachFragment(childFragment)/*
+        if (!viewModel.isConnected) {
+            subscribeOnOrders()
+        }*/
     }
+
+    @FlowPreview
+    @InternalCoroutinesApi
+    override fun onResume() {
+        super.onResume()
+
+        subscribeOnOrders()
+    }
+
 
 }

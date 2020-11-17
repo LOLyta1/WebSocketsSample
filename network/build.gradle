@@ -66,6 +66,8 @@ dependencies {
     implementation Dependency.scarletWebsocketOkHttp
     implementation Dependency.scarletLifecycle
 
+    implementation Dependency.lifecycle
+
     implementation Dependency.timber
     testImplementation Dependency.JUnit
     androidTestImplementation Dependency.JUnitTest

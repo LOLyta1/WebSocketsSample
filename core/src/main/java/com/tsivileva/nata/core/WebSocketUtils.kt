@@ -7,15 +7,6 @@ import com.tsivileva.nata.core.model.dto.WebSocketCommand
 import java.util.*
 
 object WebSocketUtils {
-    fun createOrderRequestString(
-        currencies: Pair<Currency, Currency>,
-        context: Context,
-        apiPath: String
-    ): String {
-        return currencies.first.getName(context) +
-                currencies.second.getName(context) +
-                apiPath
-    }
 
     fun createRequest(
         command: WebSocketCommand,

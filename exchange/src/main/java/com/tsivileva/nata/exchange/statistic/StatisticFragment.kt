@@ -20,7 +20,7 @@ import timber.log.Timber
 import java.lang.Exception
 
 @AndroidEntryPoint
-class StatisticFragment : Fragment() {
+class StatisticFragment : Fragment() {/*
     private val viewModel by viewModels<StatisticViewModel>()
     private var _binding: FragmentExchangeBinding? = null
     private val binding get() = _binding!!
@@ -30,16 +30,6 @@ class StatisticFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        viewModel.unsubscribe()
-    }
-
-    @InternalCoroutinesApi
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        subscribeOnStatistic()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -138,9 +128,15 @@ class StatisticFragment : Fragment() {
 //TODO: implement this
     }
 
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
+    override fun onPause() {
+        super.onPause()
+        viewModel.unsubscribe()
     }
+
+    @InternalCoroutinesApi
+    override fun onResume() {
+        super.onResume()
+        subscribeOnStatistic()
+    }
+    */
 }

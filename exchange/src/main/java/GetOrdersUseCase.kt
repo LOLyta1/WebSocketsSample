@@ -1,18 +1,14 @@
 package com.tsivileva.nata.exchange
 
 import android.content.Context
-import com.tsivileva.nata.core.WEB_SOCKET_ENDPOINT_ORDERS_PATH
-import com.tsivileva.nata.core.getExchange
+import com.tsivileva.nata.core.model.ConnectionStatus
 import com.tsivileva.nata.core.model.Currency
-import com.tsivileva.nata.core.model.Exchange
-import com.tsivileva.nata.core.model.ExchangeType
-import com.tsivileva.nata.core.model.dto.WebSocketCommand
-import com.tsivileva.nata.core.WebSocketUtils
 import com.tsivileva.nata.core.model.dto.Order
 import com.tsivileva.nata.network.OrderRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
+import timber.log.Timber
 import javax.inject.Inject
 
 class GetOrdersUseCase @Inject constructor(
@@ -21,32 +17,28 @@ class GetOrdersUseCase @Inject constructor(
 ) {
     private var params = ""
 
+    @FlowPreview
     @InternalCoroutinesApi
-    suspend fun subscribeOnStream(
+    suspend fun sendRequestForSubscribe(
         currencies: Pair<Currency, Currency>
-    ): Flow<Order> {
-        params = WebSocketUtils.createOrderRequestString(
-            currencies,
-            context,
-            WEB_SOCKET_ENDPOINT_ORDERS_PATH)
-
-        val request = WebSocketUtils.createRequest(
-            WebSocketCommand.Subscribe,
-            listOf(params)
-        )
-        repository.sendRequest(request)
-        return repository.getData(currencies)
+    ) {
+        repository.sendCommandToSubscribe(currencies)
+        repository.sendCommandToSubscribe(currencies)
+        repository.subscribeOnSocketEvent {
+            //repository.sendCommandToSubscribe(currencies)
+        }
     }
 
-    fun subscribeOnSocketEvent() =
-        repository.subscribeOnSocketEvent()
+    @InternalCoroutinesApi
+    suspend fun getOrder(
+        currencies: Pair<Currency, Currency>
+    ) :Flow<Order>{
+            return repository.getData(currencies)
 
-    fun unsubscribe(){
-        val request = WebSocketUtils.createRequest(
-            WebSocketCommand.Unsubscribe,
-            listOf(params)
-        )
-        repository.sendRequest(request)
+    }
+
+    fun unsubscribe() {
+        repository.unsubscribe()
     }
 
     /*private var from: Currency? = null

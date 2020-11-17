@@ -24,19 +24,25 @@ class MainViewPagerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentMainViewPagerBinding.inflate(inflater, container, false)
-        val fragmentList = listOf(
-            BidFragment(),
-            AskFragment(),
-            StatisticFragment()
-        )
-
-        binding.pager.adapter =
-            MainPagerAdapter(fragmentList, requireActivity().supportFragmentManager, lifecycle)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val fragmentList = listOf(
+            BidFragment().apply {
+                lifecycle.addObserver(PagerLifecycleLogger(this))
+            },
+            AskFragment().apply {
+                lifecycle.addObserver(PagerLifecycleLogger(this))
+            },
+            StatisticFragment().apply {
+                lifecycle.addObserver(PagerLifecycleLogger(this))
+            },
+        )
+        binding.pager.adapter =  MainPagerAdapter(fragmentList, requireActivity().supportFragmentManager, lifecycle)
+
         binding.bottomNavView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.menuItemBid -> runOnTimer { binding.pager.currentItem = 0 }

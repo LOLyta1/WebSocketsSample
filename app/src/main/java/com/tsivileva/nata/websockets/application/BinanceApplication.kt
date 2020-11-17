@@ -6,10 +6,8 @@ import timber.log.Timber
 
 @HiltAndroidApp
 class BinanceApplication : Application() {
-
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
     }
-
 }

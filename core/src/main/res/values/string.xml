@@ -5,6 +5,11 @@
     <string name="ethereum">ETH</string>
     <string name="tether">USDT</string>
 
+    <string name="connectionClosed">WebSocket connection is closed</string>
+    <string name="connectionFailed">WebSocket connection is failed</string>
+    <string name="httpFailed">HTTP request is failed</string>
+
+
     <string-array name="exchange">
         <item>BTC/USDT</item>
         <item>BNB/BTC</item>

@@ -3,11 +3,9 @@ package com.tsivileva.nata.exchange.statistic
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.tinder.scarlet.WebSocket
-import com.tsivileva.nata.core.getStatistic
 import com.tsivileva.nata.core.model.*
 import com.tsivileva.nata.exchange.GetOrdersUseCase
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
 import timber.log.Timber
 
 class StatisticViewModel @ViewModelInject constructor(
@@ -24,16 +22,16 @@ class StatisticViewModel @ViewModelInject constructor(
     fun setCurrenciesAndConnect(fromCurrency: Currency, toCurrency: Currency) {
             getOrdersUseCase.setCurrency(fromCurrency, toCurrency)
             getOrdersUseCase.connectToServer()
-    }*/
+    }*//*
     @InternalCoroutinesApi
     fun getStatistic(currencies: Pair<Currency, Currency>): LiveData<Statistic> {
         viewModelScope.launch {
-            getOrdersUseCase.subscribeOnStream(currencies).collect {
+            getOrdersUseCase.sendRequestForSubscribe(currencies).collect {
                 statistic.postValue(it.getStatistic())
             }
         }
-        return statistic
-    }
+        return statistic*/
+    }/*
 
     fun subscribeOnEvents(): LiveData<ConnectionStatus> {
         viewModelScope.launch {
@@ -70,7 +68,7 @@ class StatisticViewModel @ViewModelInject constructor(
     fun unsubscribe() {
         getOrdersUseCase.unsubscribe()
     }
-}
+}*/
 
 /*
     private var scope: CoroutineScope? = null

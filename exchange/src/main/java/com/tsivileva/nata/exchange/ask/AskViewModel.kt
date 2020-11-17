@@ -2,17 +2,13 @@ package com.tsivileva.nata.exchange.ask
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import androidx.lifecycle.Transformations
 import com.tinder.scarlet.WebSocket
 import com.tsivileva.nata.core.model.Exchange
 import com.tsivileva.nata.core.model.ExchangeType
-import com.tsivileva.nata.core.getExchange
 import com.tsivileva.nata.core.model.Currency
 import com.tsivileva.nata.core.model.ConnectionStatus
-import com.tsivileva.nata.core.model.dto.Order
 import com.tsivileva.nata.exchange.GetOrdersUseCase
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
 import timber.log.Timber
 
 class AskViewModel @ViewModelInject constructor(
@@ -29,11 +25,11 @@ class AskViewModel @ViewModelInject constructor(
     fun setCurrenciesAndConnect(fromCurrency: Currency, toCurrency: Currency) {
             getOrdersUseCase.setCurrency(fromCurrency, toCurrency)
             getOrdersUseCase.connectToServer()
-    }*/
+    }*//*
     @InternalCoroutinesApi
     fun getOrders(currencies: Pair<Currency, Currency>): LiveData<Exchange> {
         viewModelScope.launch {
-            getOrdersUseCase.subscribeOnStream(currencies).collect {
+            getOrdersUseCase.sendRequestForSubscribe(currencies).collect {
                 orders.postValue(it.getExchange(ExchangeType.Ask))
             }
 
@@ -76,7 +72,7 @@ class AskViewModel @ViewModelInject constructor(
     fun unsubscribe() {
         getOrdersUseCase.unsubscribe()
     }
-}
+}*/
 
 /*
 
@@ -113,3 +109,4 @@ override fun onCleared() {
     super.onCleared()
 }
 }*/
+}

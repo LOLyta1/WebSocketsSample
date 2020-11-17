@@ -16,7 +16,7 @@ interface NetworkClient {
         fun subscribeOnConnectionStatus(scope: CoroutineScope): LiveData<ConnectionStatus>
         var isConnected: Boolean*/
         fun subscribeOnSocketEvent(): Flow<com.tinder.scarlet.WebSocket.Event>
-        fun sendRequest(socket: SocketRequest)
+        fun sendRequest(request: SocketRequest)
         fun getData(): Flow<T>
     }
 

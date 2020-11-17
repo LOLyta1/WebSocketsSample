@@ -22,7 +22,7 @@ import java.lang.Exception
 
 @AndroidEntryPoint
 class AskFragment : Fragment() {
-    val viewModel by viewModels<AskViewModel>()
+   /* val viewModel by viewModels<AskViewModel>()
     private var _binding: FragmentExchangeBinding? = null
     private val binding get() = _binding!!
     private val askAdapter: AskRecyclerAdapter? = AskRecyclerAdapter()
@@ -41,6 +41,7 @@ class AskFragment : Fragment() {
         initRecyclerView()
         initObservers()
         initSpinner()
+        subscribeOnOrders()
     }
 
     private fun initRecyclerView() {
@@ -56,7 +57,6 @@ class AskFragment : Fragment() {
             when (it) {
                 ConnectionStatus.Opened -> {
                     Timber.d("Connection was opened")
-                    subscribeOnOrders()
                 }
 
                 ConnectionStatus.Closed -> {
@@ -125,10 +125,13 @@ class AskFragment : Fragment() {
 //TODO: implement this
     }
 
-
-    override fun onDetach() {
-        super.onDetach()
-        viewModel.unsubscribe()
+    override fun onPause() {
+        super.onPause()
     }
+
+    @InternalCoroutinesApi
+    override fun onResume() {
+        super.onResume()
+    }*/
 
 }

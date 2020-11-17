@@ -21,6 +21,7 @@ public class Dependency {
     public static final String JUNIT_TEST_VERSION = "1.1.2";
     public static final String ESPRESSO_VERSION = "3.3.0";
     private static final String GSON_VERSION = "2.8.6";
+    private static final String LIFECYCLE_VERSION = "2.2.0";
 
     public static final String kotlin = "org.jetbrains.kotlin:kotlin-stdlib:" + KOTLIN_VERSION;
     public static final String kotlinSerialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:" + KOTLIN_SERIALIZATION_VERSION;
@@ -55,4 +56,6 @@ public class Dependency {
     public static final String JUnit = "junit:junit:" + JUNIT_VERSION;
     public static final String JUnitTest = "androidx.test.ext:junit:" + JUNIT_TEST_VERSION;
     public static final String espresso = "androidx.test.espresso:espresso-core:" + ESPRESSO_VERSION;
+
+    public static final String lifecycle = "androidx.lifecycle:lifecycle-runtime-ktx:" + LIFECYCLE_VERSION;
 }
