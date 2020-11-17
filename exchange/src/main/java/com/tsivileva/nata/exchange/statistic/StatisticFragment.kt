@@ -1,5 +1,6 @@
 package com.tsivileva.nata.exchange.statistic
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,10 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsivileva.nata.core.databinding.FragmentExchangeBinding
 import com.tsivileva.nata.core.model.ConnectionStatus
 import com.tsivileva.nata.core.model.Currency
-import com.tsivileva.nata.exchange.R
-import com.tsivileva.nata.exchange.bid.BidRecyclerAdapter
-import com.tsivileva.nata.exchange.bid.BidViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.InternalCoroutinesApi
 import timber.log.Timber
 import java.lang.Exception
 
@@ -31,6 +30,17 @@ class StatisticFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
+    override fun onDetach() {
+        super.onDetach()
+        viewModel.unsubscribe()
+    }
+
+    @InternalCoroutinesApi
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        subscribeOnStatistic()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,6 +49,7 @@ class StatisticFragment : Fragment() {
         return binding.root
     }
 
+    @InternalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
@@ -53,13 +64,13 @@ class StatisticFragment : Fragment() {
         }
     }
 
+    @InternalCoroutinesApi
     private fun initObservers() {
-        viewModel.subscribeOnConnectionStatus(viewLifecycleOwner).observe(viewLifecycleOwner) {
+        viewModel.subscribeOnEvents().observe(viewLifecycleOwner) {
             when (it) {
                 ConnectionStatus.Opened -> {
                     Timber.d("Connection was opened")
-                    connect(binding.currencySpinner.getCurrencyPair())
-                    subscribeOnOrders()
+                    subscribeOnStatistic()
                 }
 
                 ConnectionStatus.Closed -> {
@@ -69,22 +80,16 @@ class StatisticFragment : Fragment() {
                 is ConnectionStatus.Failed -> {
                     viewModel.unsubscribe()
                 }
-
-                is ConnectionStatus.Loading -> {
-                    setLoadingState()
-                }
             }
         }
     }
 
-    private fun connect(pair: Pair<Currency, Currency>) {
-        viewModel.setCurrenciesAndConnect(pair.first, pair.second)
-    }
-
-    private fun subscribeOnOrders() {
+    @InternalCoroutinesApi
+    private fun subscribeOnStatistic() {
         try {
             setLoadingState()
-            viewModel.getOrders(viewLifecycleOwner).observe(viewLifecycleOwner) {
+            val currencies = binding.currencySpinner.getCurrencyPair()
+            viewModel.getStatistic(currencies).observe(viewLifecycleOwner) {
                 askAdapter?.addToList(it)
                 binding.currenceRecyclerView.smoothScrollToPosition(askAdapter?.itemCount ?: 0)
             }
@@ -95,6 +100,7 @@ class StatisticFragment : Fragment() {
     }
 
 
+    @InternalCoroutinesApi
     fun initSpinner() {
         val adapter = ArrayAdapter.createFromResource(
             requireContext(),
@@ -111,7 +117,7 @@ class StatisticFragment : Fragment() {
                     id: Long
                 ) {
                     askAdapter?.clear()
-                    connect(getCurrencyPair())
+                    viewModel.getStatistic(getCurrencyPair())
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {

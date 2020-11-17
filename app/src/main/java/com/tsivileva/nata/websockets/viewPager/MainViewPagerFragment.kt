@@ -25,9 +25,9 @@ class MainViewPagerFragment : Fragment() {
     ): View? {
         _binding = FragmentMainViewPagerBinding.inflate(inflater, container, false)
         val fragmentList = listOf(
-            StatisticFragment(),
             BidFragment(),
-            AskFragment()
+            AskFragment(),
+            StatisticFragment()
         )
 
         binding.pager.adapter =
@@ -39,7 +39,7 @@ class MainViewPagerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.bottomNavView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.menuItemBird -> runOnTimer { binding.pager.currentItem = 0 }
+                R.id.menuItemBid -> runOnTimer { binding.pager.currentItem = 0 }
                 R.id.menuItemAsk -> runOnTimer { binding.pager.currentItem = 1 }
                 R.id.menuItemDiff -> runOnTimer { binding.pager.currentItem = 2 }
             }
@@ -52,7 +52,7 @@ class MainViewPagerFragment : Fragment() {
                     super.onPageScrollStateChanged(state)
                     if (state == SCROLL_STATE_IDLE) {
                         when (binding.pager.currentItem) {
-                            0 -> binding.bottomNavView.selectedItemId = R.id.menuItemBird
+                            0 -> binding.bottomNavView.selectedItemId = R.id.menuItemBid
                             1 -> binding.bottomNavView.selectedItemId = R.id.menuItemAsk
                             2 -> binding.bottomNavView.selectedItemId = R.id.menuItemDiff
                         }

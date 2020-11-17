@@ -8,7 +8,8 @@ import com.tsivileva.nata.core.getExchange
 import com.tsivileva.nata.core.model.Currency
 import com.tsivileva.nata.core.model.ConnectionStatus
 import com.tsivileva.nata.core.model.dto.Order
-
+//TODO:delete
+/*
 class OrderViewModel @ViewModelInject constructor(
     private val getOrdersUseCase: GetOrdersUseCase
 ) : ViewModel() {
@@ -44,4 +45,4 @@ class OrderViewModel @ViewModelInject constructor(
         disconnect()
         super.onCleared()
     }
-}
+}*/

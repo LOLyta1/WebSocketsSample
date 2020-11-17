@@ -1,5 +1,6 @@
 package com.tsivileva.nata.network.rest
 
+import com.tinder.scarlet.lifecycle.android.AndroidLifecycle
 import com.tsivileva.nata.core.NetworkClient
 import com.tsivileva.nata.core.model.dto.OrderSnapshot
 import java.lang.IllegalArgumentException

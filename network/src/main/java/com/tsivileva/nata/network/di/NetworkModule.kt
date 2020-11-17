@@ -1,6 +1,9 @@
 package com.tsivileva.nata.network.di
 
+import android.app.Application
+import com.tinder.scarlet.Lifecycle
 import com.tinder.scarlet.Scarlet
+import com.tinder.scarlet.lifecycle.android.AndroidLifecycle
 import com.tinder.scarlet.messageadapter.gson.GsonMessageAdapter
 import com.tinder.scarlet.websocket.okhttp.newWebSocketFactory
 import com.tsivileva.nata.network.socket.SocketApi
@@ -40,8 +43,8 @@ class NetworkModule {
         .build()
         .create(SocketApi::class.java)
 
+
     @Provides
-    @Singleton
     fun provideWebSocketClient(api: SocketApi): OrderWebSocketClient {
         return OrderWebSocketClient(api)
     }

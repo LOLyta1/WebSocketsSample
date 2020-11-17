@@ -64,6 +64,7 @@ dependencies {
     implementation Dependency.scarletGsonMessageAdapter
     implementation Dependency.scarletCoroutinesStreamAdapter
     implementation Dependency.scarletWebsocketOkHttp
+    implementation Dependency.scarletLifecycle
 
     implementation Dependency.timber
     testImplementation Dependency.JUnit

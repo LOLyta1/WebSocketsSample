@@ -46,6 +46,7 @@ public class Dependency {
     public static final String scarlet = "com.tinder.scarlet:scarlet:" + SCARLET_VERSION;
     public static final String scarletWebsocketOkHttp = "com.tinder.scarlet:websocket-okhttp:" + SCARLET_ADDONS_VERSION;
     public static final String scarletGsonMessageAdapter = "com.tinder.scarlet:message-adapter-gson:" + SCARLET_ADDONS_VERSION;
+    public static final String scarletLifecycle = "com.tinder.scarlet:lifecycle-android:" + SCARLET_ADDONS_VERSION;
 
     public static final String androidCoroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:" + ANDROID_CORE_VERSION;
     public static final String scarletCoroutinesStreamAdapter = "com.tinder.scarlet:stream-adapter-coroutines:" + SCARLET_ADDONS_VERSION;

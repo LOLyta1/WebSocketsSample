@@ -4,7 +4,7 @@
     <item
         app:showAsAction="ifRoom"
         android:icon="@android:drawable/ic_input_add"
-        android:id="@+id/menuItemBird"
+        android:id="@+id/menuItemBid"
         android:title="@string/bid" />
 
     <item

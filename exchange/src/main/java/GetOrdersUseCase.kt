@@ -1,29 +1,55 @@
 package com.tsivileva.nata.exchange
+
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import com.tsivileva.nata.core.WEB_SOCKET_ENDPOINT_ORDERS_PATH
+import com.tsivileva.nata.core.getExchange
 import com.tsivileva.nata.core.model.Currency
-import com.tsivileva.nata.core.model.dto.ORDERS_PATH
+import com.tsivileva.nata.core.model.Exchange
+import com.tsivileva.nata.core.model.ExchangeType
+import com.tsivileva.nata.core.model.dto.WebSocketCommand
+import com.tsivileva.nata.core.WebSocketUtils
 import com.tsivileva.nata.core.model.dto.Order
-import com.tsivileva.nata.network.rest.OrderRestClient
-import com.tsivileva.nata.network.socket.OrderWebSocketClient
+import com.tsivileva.nata.network.OrderRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
-import timber.log.Timber
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetOrdersUseCase @Inject constructor(
-    private val webSocketClient: OrderWebSocketClient,
-    private val restClient: OrderRestClient,
+    private val repository: OrderRepository,
     @ApplicationContext private val context: Context
 ) {
-    private var from: Currency? = null
+    private var params = ""
+
+    @InternalCoroutinesApi
+    suspend fun subscribeOnStream(
+        currencies: Pair<Currency, Currency>
+    ): Flow<Order> {
+        params = WebSocketUtils.createOrderRequestString(
+            currencies,
+            context,
+            WEB_SOCKET_ENDPOINT_ORDERS_PATH)
+
+        val request = WebSocketUtils.createRequest(
+            WebSocketCommand.Subscribe,
+            listOf(params)
+        )
+        repository.sendRequest(request)
+        return repository.getData(currencies)
+    }
+
+    fun subscribeOnSocketEvent() =
+        repository.subscribeOnSocketEvent()
+
+    fun unsubscribe(){
+        val request = WebSocketUtils.createRequest(
+            WebSocketCommand.Unsubscribe,
+            listOf(params)
+        )
+        repository.sendRequest(request)
+    }
+
+    /*private var from: Currency? = null
     private var to: Currency? = null
 
     fun setCurrency(from: Currency, to: Currency) {
@@ -38,7 +64,7 @@ class GetOrdersUseCase @Inject constructor(
     fun connectToServer() {
         if (isCurrencySet()) {
             webSocketClient.setParams(from!!, to!!, ORDERS_PATH, context)
-            webSocketClient.connect()
+            webSocketClient.getData()
         }
     }
 
@@ -78,6 +104,6 @@ class GetOrdersUseCase @Inject constructor(
     }
 
     fun subscribeConnectionStatus(scope: CoroutineScope) =
-        webSocketClient.subscribeOnConnectionStatus(scope)
+        webSocketClient.subscribeOnConnectionStatus(scope)*/
 
 }
