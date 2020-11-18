@@ -1,0 +1,42 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@color/lightGray_100">
+
+    <TextView
+        android:id="@+id/bidPriceTV"
+        style="@style/TextView.RecyclerItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        android:textColor="@android:color/holo_green_dark"
+        tools:text="0035287" />
+
+    <TextView
+        android:id="@+id/bidDiffTV"
+        style="@style/TextView.RecyclerItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        tools:text="0035287" />
+
+    <TextView
+        android:id="@+id/askPriceTV"
+        style="@style/TextView.RecyclerItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        android:textColor="@android:color/holo_red_light"
+        tools:text="0035287" />
+
+
+    <TextView
+        android:id="@+id/askDiffTV"
+        style="@style/TextView.RecyclerItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        tools:text="0035287" />
+</LinearLayout>
