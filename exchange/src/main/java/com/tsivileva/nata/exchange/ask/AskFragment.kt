@@ -20,6 +20,7 @@ class AskFragment : Fragment() {
     private var _binding: FragmentExchangeBinding? = null
     private val binding get() = _binding!!
     private val askAdapter: AskRecyclerAdapter? = AskRecyclerAdapter()
+    private var isSpinnerClicked = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,11 +34,13 @@ class AskFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
 
-        binding.spinner.setSelection(-1)
-
         binding.spinner.setOnCurrencySelectListener {
-            viewModel.unsubscribe()
-            viewModel.load(it)
+            if (isSpinnerClicked) {
+                viewModel.unsubscribe()
+                viewModel.load(it)
+            } else {
+                isSpinnerClicked = true
+            }
         }
 
         viewModel.orders.observe(viewLifecycleOwner) {

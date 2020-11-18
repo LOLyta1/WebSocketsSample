@@ -49,8 +49,6 @@ class BidFragment : Fragment() {
             }
         }
 
-        viewModel.load(binding.spinner.getCurrencyPair())
-
         viewModel.orders.observe(viewLifecycleOwner) {
             when (it) {
                 is NetworkResponse.Loading -> {
@@ -100,6 +98,5 @@ class BidFragment : Fragment() {
             binding.spinner.getCurrencyPair()
         )
     }
-
 
 }
