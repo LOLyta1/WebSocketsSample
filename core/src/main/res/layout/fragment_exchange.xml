@@ -11,6 +11,18 @@
         android:paddingTop="@dimen/fragmentContainerPaddingTop"
         android:paddingEnd="@dimen/fragmentContainerPaddingEnd">
 
+        <Button
+            android:text="connect"
+            android:id="@+id/connectBTN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:text="disconnect"
+            android:id="@+id/disconnectBTN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="wrap_content"

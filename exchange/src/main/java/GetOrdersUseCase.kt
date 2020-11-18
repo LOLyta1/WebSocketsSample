@@ -12,9 +12,9 @@ import javax.inject.Inject
 class GetOrdersUseCase @Inject constructor(
     private val repository: OrderRepository
 ) {
-    suspend operator fun invoke(currencies: Pair<Currency, Currency>): Flow<SocketEvents<Order>> {
+    suspend operator fun invoke(currencies: Pair<Currency, Currency>): Flow<SocketEvents<Order>>? {
         repository.currencies = currencies
-        return repository.load().filter {
+        return repository.load()?.filter {
             if (it is SocketEvents.Emitted) {
                 deleteEmpty(it.data.bids)
                 deleteEmpty(it.data.ask)
@@ -25,13 +25,12 @@ class GetOrdersUseCase @Inject constructor(
         }
     }
 
-    suspend fun unsubscribe() {
+    suspend fun unsubscribe() =
         repository.unsubscribe()
-    }
 
-    private suspend fun cancel(){
-        repository.cancel()
-    }
+
+    suspend fun close()=
+        repository.close()
 
 
     private fun deleteEmpty(list: List<List<String>>): List<List<String>> {
@@ -39,5 +38,9 @@ class GetOrdersUseCase @Inject constructor(
             val beforePoint = it.last().split(".")[0]
             beforePoint.toInt() > 0
         }.toList()
+    }
+
+   suspend fun cancel() {
+        repository.cancel()
     }
 }

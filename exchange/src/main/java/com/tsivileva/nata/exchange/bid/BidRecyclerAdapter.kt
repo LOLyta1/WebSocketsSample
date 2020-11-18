@@ -9,6 +9,7 @@ import com.tsivileva.nata.exchange.com.tsivileva.nata.exchange.EVEN_RECYCLER_ITE
 import com.tsivileva.nata.exchange.com.tsivileva.nata.exchange.ODD_RECYCLER_ITEM
 import com.tsivileva.nata.exchange.databinding.ItemBidLayoutBinding
 import com.tsivileva.nata.exchange.databinding.ItemBidOddLayoutBinding
+import timber.log.Timber
 
 
 class BidRecyclerAdapter : RecyclerView.Adapter<BidRecyclerAdapter.BidEvenViewHolder>() {
@@ -16,6 +17,7 @@ class BidRecyclerAdapter : RecyclerView.Adapter<BidRecyclerAdapter.BidEvenViewHo
     private val list = mutableListOf<Exchange.Data>()
 
     fun addToList(item: Exchange) {
+        Timber.d("add new values into list, count = ${item.ordersData.count()}")
         list.addAll(item.ordersData)
         val offsetSize = item.ordersData.count()
         notifyItemRangeChanged(

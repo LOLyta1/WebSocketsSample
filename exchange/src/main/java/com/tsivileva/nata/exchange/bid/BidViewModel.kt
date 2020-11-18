@@ -7,11 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tsivileva.nata.core.R
 import com.tsivileva.nata.core.SocketEvents
-import com.tsivileva.nata.core.utils.getExchange
 import com.tsivileva.nata.core.model.Currency
 import com.tsivileva.nata.core.model.Exchange
 import com.tsivileva.nata.core.model.ExchangeType
 import com.tsivileva.nata.core.model.NetworkResponse
+import com.tsivileva.nata.core.utils.getExchange
 import com.tsivileva.nata.exchange.GetOrdersUseCase
 import dagger.hilt.android.qualifiers.ActivityContext
 import kotlinx.coroutines.flow.collect
@@ -31,12 +31,12 @@ class BidViewModel @ViewModelInject constructor(
 
         viewModelScope.launch {
             orders.postValue(NetworkResponse.Loading())
-            getOrdersUseCase(currencies).collect {
+            getOrdersUseCase(currencies)?.collect {
                 when (it) {
                     is SocketEvents.Sleep -> {
                     }
                     is SocketEvents.Failed -> {
-                        orders.postValue(NetworkResponse.Error(it.error.message.toString()))
+                        orders.postValue(NetworkResponse.Error(it.error?.message.toString()))
                     }
                     is SocketEvents.Emitted -> {
                         val bids = it.data.getExchange(ExchangeType.Bid)
@@ -55,6 +55,7 @@ class BidViewModel @ViewModelInject constructor(
     fun unsubscribe() {
         viewModelScope.launch {
             getOrdersUseCase.unsubscribe()
+            getOrdersUseCase.cancel()
         }
     }
 

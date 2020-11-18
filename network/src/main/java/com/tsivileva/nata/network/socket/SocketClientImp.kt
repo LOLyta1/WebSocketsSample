@@ -11,6 +11,7 @@ import okhttp3.Request
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import timber.log.Timber
+import java.net.Socket
 
 class SocketClientImp(
     override var listener: SocketListener<Order>,
@@ -34,5 +35,9 @@ class SocketClientImp(
 
     override suspend fun cancel() {
         socket?.cancel()
+    }
+
+    override suspend fun close() {
+       socket?.close(1000,null)
     }
 }

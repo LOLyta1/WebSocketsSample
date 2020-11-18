@@ -52,7 +52,9 @@ dependencies {
 
     implementation Dependency.hilt
     kapt Dependency.hiltKapt
-    kapt Dependency.kaptHiltViewModel
+    kapt Dependency.hiltViewModelKapt
+    androidTestImplementation  Dependency.hiltAndroidTestImplementation
+    kaptAndroidTest   Dependency.hiltkKaptAndroidTest
 
     implementation Dependency.okHttp
     implementation Dependency.okHttpLoggingInterceptor

@@ -15,6 +15,7 @@ interface NetworkClient {
         suspend fun connect(url: String)
         suspend fun sendRequest(request: SocketRequest)
         suspend fun cancel()
+        suspend fun close()
     }
 
     interface Rest {
@@ -25,7 +26,7 @@ interface NetworkClient {
 }
 
 interface SocketListener<T> {
-    val flow: Flow<SocketEvents<T>>
+    var flow: Flow<SocketEvents<T>>?
     fun onClosed(webSocket: WebSocket, code: Int, reason: String)
     fun onOpen(webSocket: WebSocket, response: Response)
     fun onMessage(webSocket: WebSocket, bytes: ByteString)
@@ -39,6 +40,6 @@ sealed class SocketEvents<T> {
     class Opened<T> : SocketEvents<T>()
     class Emitted<T>(var data: T) : SocketEvents<T>()
     class Closed<T> : SocketEvents<T>()
-    class Failed<T>(var error: Throwable) : SocketEvents<T>()
+    class Failed<T>(var error: Throwable?) : SocketEvents<T>()
 }
 

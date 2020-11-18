@@ -23,6 +23,7 @@ class StatisticFragment : Fragment() {
     private var _binding: FragmentExchangeBinding? = null
     private val binding get() = _binding!!
     private val statisticAdapter: StatisticRecyclerAdapter? = StatisticRecyclerAdapter()
+    private var isSpinnerClicked = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,8 +40,12 @@ class StatisticFragment : Fragment() {
         initRecyclerView()
 
         binding.spinner.setOnCurrencySelectListener {
-            viewModel.unsubscribe()
-            viewModel.load(it)
+            if (isSpinnerClicked) {
+                viewModel.unsubscribe()
+                viewModel.load(it)
+            } else {
+                isSpinnerClicked = true
+            }
         }
 
         viewModel.orders.observe(viewLifecycleOwner) {
@@ -80,15 +85,13 @@ class StatisticFragment : Fragment() {
         binding.loader.visibility = View.GONE
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.load(binding.spinner.getCurrencyPair())
+    }
+
     override fun onPause() {
         super.onPause()
         viewModel.unsubscribe()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.load(
-            binding.spinner.getCurrencyPair()
-        )
     }
 }

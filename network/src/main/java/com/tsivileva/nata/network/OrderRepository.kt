@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
 import java.util.*
 import javax.inject.Inject
+import kotlin.random.Random
 
 class OrderRepository @Inject constructor(
     private var socketClient: NetworkClient.Socket<Order>,
@@ -19,8 +20,9 @@ class OrderRepository @Inject constructor(
 ) : Repository<Flow<SocketEvents<Order>>> {
 
     var currencies: Pair<Currency, Currency> = Pair(Currency.Bitcoin, Currency.Tether)
+    private var connectionId: Int = 0
 
-    override suspend fun load(): Flow<SocketEvents<Order>> {
+    override suspend fun load(): Flow<SocketEvents<Order>>? {
         socketClient.connect(getUrl())
 
         val snapshot = rest.load(currencies)
@@ -28,7 +30,7 @@ class OrderRepository @Inject constructor(
         return socketClient
             .listener
             .flow
-            .filter {
+            ?.filter {
                 if (it is SocketEvents.Emitted) {
                     it.data.lastUpdateId > snapshot.lastUpdateId + 1
                 } else {
@@ -78,10 +80,26 @@ class OrderRepository @Inject constructor(
         val lowerCaseParams = params.map {
             it.toLowerCase(Locale.ROOT)
         }
+
         return SocketRequest(
+            id = connectionId,
             method = command.name,
             params = lowerCaseParams
         )
     }
+
+    override suspend fun close() {
+        generateNewConnectionId()
+        socketClient.listener.flow = null
+    }
+
+    private fun generateNewConnectionId() {
+        var newId = 0
+        while (newId == connectionId) {
+            newId = Random.nextInt(1, 100)
+        }
+        connectionId = newId
+    }
+
 
 }

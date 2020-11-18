@@ -2,6 +2,7 @@ package com.tsivileva.nata.exchange.ask
 
 import android.content.Context
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -31,16 +32,16 @@ class AskViewModel @ViewModelInject constructor(
 
         viewModelScope.launch {
             orders.postValue(NetworkResponse.Loading())
-            getOrdersUseCase(currencies).collect {
+            getOrdersUseCase(currencies)?.collect {
                 when (it) {
                     is SocketEvents.Sleep -> {
                     }
                     is SocketEvents.Failed -> {
-                        orders.postValue(NetworkResponse.Error(it.error.message.toString()))
+                        orders.postValue(NetworkResponse.Error(it.error?.message.toString()))
                     }
                     is SocketEvents.Emitted -> {
-                        val bids = it.data.getExchange(ExchangeType.Ask)
-                        orders.postValue(NetworkResponse.Successful(bids))
+                        val ask = it.data.getExchange(ExchangeType.Ask)
+                        orders.postValue(NetworkResponse.Successful(ask))
                     }
                     is SocketEvents.Closed -> {
                         val msg = context.getString(R.string.connectionClosed)
@@ -55,6 +56,7 @@ class AskViewModel @ViewModelInject constructor(
     fun unsubscribe() {
         viewModelScope.launch {
             getOrdersUseCase.unsubscribe()
+            getOrdersUseCase.close()
         }
     }
 

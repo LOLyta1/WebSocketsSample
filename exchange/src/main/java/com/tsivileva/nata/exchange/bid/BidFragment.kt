@@ -37,8 +37,7 @@ class BidFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-
-        binding.spinner.setSelection(-1)
+        iniObserver()
 
         binding.spinner.setOnCurrencySelectListener {
             if (isSpinnerClicked) {
@@ -49,8 +48,25 @@ class BidFragment : Fragment() {
             }
         }
 
-        viewModel.load(binding.spinner.getCurrencyPair())
+        binding.connectBTN.setOnClickListener {
+            iniObserver()
+            viewModel.load(binding.spinner.getCurrencyPair())
+        }
 
+        binding.disconnectBTN.setOnClickListener {
+            viewModel.orders.removeObservers(viewLifecycleOwner)
+            viewModel.unsubscribe()
+        }
+    }
+
+    private fun initRecyclerView() {
+        binding.currencyRv.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            adapter = askAdapter
+        }
+    }
+
+    private fun iniObserver(){
         viewModel.orders.observe(viewLifecycleOwner) {
             when (it) {
                 is NetworkResponse.Loading -> {
@@ -72,14 +88,6 @@ class BidFragment : Fragment() {
             }
         }
     }
-
-    private fun initRecyclerView() {
-        binding.currencyRv.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            adapter = askAdapter
-        }
-    }
-
     private fun setLoadingState() {
         binding.loader.visibility = View.VISIBLE
     }
@@ -89,17 +97,14 @@ class BidFragment : Fragment() {
         binding.loader.visibility = View.GONE
     }
 
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.load(binding.spinner.getCurrencyPair())
+    }
+
     override fun onPause() {
         super.onPause()
         viewModel.unsubscribe()
     }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.load(
-            binding.spinner.getCurrencyPair()
-        )
-    }
-
-
 }

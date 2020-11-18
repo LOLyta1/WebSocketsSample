@@ -55,7 +55,7 @@ dependencies {
     implementation Dependency.hilt
     kapt Dependency.hiltKapt
     implementation Dependency.hiltViewModel
-    kapt Dependency.kaptHiltViewModel
+    kapt Dependency.hiltViewModelKapt
     annotationProcessor Dependency.annotationProcessorHiltViewModel
 
     implementation Dependency.scarlet

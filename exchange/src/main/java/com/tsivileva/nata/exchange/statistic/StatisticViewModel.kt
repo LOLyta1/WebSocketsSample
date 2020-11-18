@@ -30,16 +30,16 @@ class StatisticViewModel @ViewModelInject constructor(
 
         viewModelScope.launch {
             orders.postValue(NetworkResponse.Loading())
-            getOrdersUseCase(currencies).collect {
+            getOrdersUseCase(currencies)?.collect {
                 when (it) {
                     is SocketEvents.Sleep -> {
                     }
                     is SocketEvents.Failed -> {
-                        orders.postValue(NetworkResponse.Error(it.error.message.toString()))
+                        orders.postValue(NetworkResponse.Error(it.error?.message.toString()))
                     }
                     is SocketEvents.Emitted -> {
-                        val bids = it.data.getStatistic()
-                        orders.postValue(NetworkResponse.Successful(bids))
+                        val statistic = it.data.getStatistic()
+                        orders.postValue(NetworkResponse.Successful(statistic))
                     }
                     is SocketEvents.Closed -> {
                         val msg = context.getString(R.string.connectionClosed)
@@ -54,6 +54,7 @@ class StatisticViewModel @ViewModelInject constructor(
     fun unsubscribe() {
         viewModelScope.launch {
             getOrdersUseCase.unsubscribe()
+            getOrdersUseCase.close()
         }
     }
 }

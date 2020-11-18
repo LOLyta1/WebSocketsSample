@@ -6,6 +6,8 @@ public class Dependency {
 
     public static final String HILT_VERSION = "2.28-alpha";
     public static final String HILT_VIEW_MODEL_VERSION = "1.0.0-alpha02";
+    public static final String HILT_ANDROID_TEST_IMPLEMENTATION_VERSION = "2.28-alpha";
+    public static final String HILT_KAPT_ANDROID_TEST_VERSION = "2.28-alpha";
 
     public static final String NAVIGATION_VERSION = "2.3.1";
 
@@ -26,7 +28,9 @@ public class Dependency {
     public static final String hilt = "com.google.dagger:hilt-android:" + HILT_VERSION;
     public static final String hiltKapt = "com.google.dagger:hilt-android-compiler:" + HILT_VERSION;
     public static final String hiltViewModel = "androidx.hilt:hilt-lifecycle-viewmodel:" + HILT_VIEW_MODEL_VERSION;
-    public static final String kaptHiltViewModel = "androidx.hilt:hilt-compiler:" + HILT_VIEW_MODEL_VERSION;
+    public static final String hiltViewModelKapt = "androidx.hilt:hilt-compiler:" + HILT_VIEW_MODEL_VERSION;
+    public static final String hiltAndroidTestImplementation = "com.google.dagger:hilt-android-testing:" + HILT_ANDROID_TEST_IMPLEMENTATION_VERSION;
+    public static final String hiltkKaptAndroidTest  = "com.google.dagger:hilt-android-compiler:" + HILT_KAPT_ANDROID_TEST_VERSION;
     public static final String annotationProcessorHiltViewModel = "androidx.hilt:hilt-compiler:" + HILT_VIEW_MODEL_VERSION;
     public static final String navigation = "androidx.navigation:navigation-fragment-ktx:" + NAVIGATION_VERSION;
     public static final String navigationUI = "androidx.navigation:navigation-ui-ktx:" + NAVIGATION_VERSION;
