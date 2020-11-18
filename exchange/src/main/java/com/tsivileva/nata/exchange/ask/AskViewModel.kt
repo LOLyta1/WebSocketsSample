@@ -1,112 +1,61 @@
 package com.tsivileva.nata.exchange.ask
 
+import android.content.Context
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.*
-import com.tinder.scarlet.WebSocket
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.tsivileva.nata.core.R
+import com.tsivileva.nata.core.SocketEvents
+import com.tsivileva.nata.core.utils.getExchange
+import com.tsivileva.nata.core.model.Currency
 import com.tsivileva.nata.core.model.Exchange
 import com.tsivileva.nata.core.model.ExchangeType
-import com.tsivileva.nata.core.model.Currency
-import com.tsivileva.nata.core.model.ConnectionStatus
+import com.tsivileva.nata.core.model.NetworkResponse
 import com.tsivileva.nata.exchange.GetOrdersUseCase
-import kotlinx.coroutines.*
-import timber.log.Timber
+import dagger.hilt.android.qualifiers.ActivityContext
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class AskViewModel @ViewModelInject constructor(
-    private val getOrdersUseCase: GetOrdersUseCase
+    private val getOrdersUseCase: GetOrdersUseCase,
+    @ActivityContext private val context: Context
 ) : ViewModel() {
 
-    var isConnected = false
-    private var orders = MutableLiveData<Exchange>()
-    private var connectionStatus = MutableLiveData<ConnectionStatus>()
+    val orders = MutableLiveData<NetworkResponse<Exchange>>()
 
-    /*fun isConnected() =
-        getOrdersUseCase.isConnected
+    private var currencies: Pair<Currency, Currency>? = null
 
-    fun setCurrenciesAndConnect(fromCurrency: Currency, toCurrency: Currency) {
-            getOrdersUseCase.setCurrency(fromCurrency, toCurrency)
-            getOrdersUseCase.connectToServer()
-    }*//*
-    @InternalCoroutinesApi
-    fun getOrders(currencies: Pair<Currency, Currency>): LiveData<Exchange> {
+    fun load(currencies: Pair<Currency, Currency>) {
+        this.currencies = currencies
+
         viewModelScope.launch {
-            getOrdersUseCase.sendRequestForSubscribe(currencies).collect {
-                orders.postValue(it.getExchange(ExchangeType.Ask))
-            }
-
-        }
-        return orders
-    }
-
-    fun subscribeOnEvents(): LiveData<ConnectionStatus> {
-        viewModelScope.launch {
-            getOrdersUseCase.subscribeOnSocketEvent().collect {
-                if (it is WebSocket.Event.OnConnectionOpened<*>) {
-                    Timber.d("STATE OnConnectionOpened")
-                    connectionStatus.postValue(ConnectionStatus.Opened)
-                    isConnected = true
+            orders.postValue(NetworkResponse.Loading())
+            getOrdersUseCase(currencies).collect {
+                when (it) {
+                    is SocketEvents.Sleep -> {
+                    }
+                    is SocketEvents.Failed -> {
+                        orders.postValue(NetworkResponse.Error(it.error.message.toString()))
+                    }
+                    is SocketEvents.Emitted -> {
+                        val bids = it.data.getExchange(ExchangeType.Ask)
+                        orders.postValue(NetworkResponse.Successful(bids))
+                    }
+                    is SocketEvents.Closed -> {
+                        val msg = context.getString(R.string.connectionClosed)
+                        orders.postValue(NetworkResponse.Error(msg))
+                    }
                 }
 
-
-                if (it is WebSocket.Event.OnConnectionFailed) {
-                    Timber.d("STATE OnConnectionFailed")
-                    connectionStatus.postValue(
-                        ConnectionStatus.Failed(it.throwable.message ?: "")
-                    )
-                    isConnected = false
-                }
-
-                if (it is WebSocket.Event.OnConnectionClosed) {
-                    Timber.d("STATE OnConnectionClosed")
-                    connectionStatus.postValue(ConnectionStatus.Closed)
-                    isConnected = false
-                }
-
-                if (it is WebSocket.Event.OnMessageReceived) {
-                    Timber.d("STATE OnMessageReceived")
-                }
             }
         }
-        return connectionStatus
     }
 
     fun unsubscribe() {
-        getOrdersUseCase.unsubscribe()
+        viewModelScope.launch {
+            getOrdersUseCase.unsubscribe()
+        }
     }
-}*/
 
-/*
-
-@ExperimentalCoroutinesApi
-@FlowPreview
-fun getOrders(lifecycleOwner: LifecycleOwner): LiveData<Exchange> {
-    Timber.d("GET OBSERVERS START")
-    orders.removeObservers(lifecycleOwner)
-    scope = CoroutineScope(Dispatchers.IO)
-    orders = getOrdersUseCase.getData(scope!!)
-    return Transformations.map(orders) {
-        it.getExchange(ExchangeType.Ask)
-    }
-}
-
-fun unsubscribe() {
-    getOrdersUseCase.unsubscribe()
-}
-
-fun subscribeOnConnectionStatus(lifecycleOwner: LifecycleOwner): LiveData<ConnectionStatus> {
-    connectionStatus.removeObservers(lifecycleOwner)
-    scope = CoroutineScope(Dispatchers.IO)
-    connectionStatus = getOrdersUseCase.subscribeConnectionStatus(scope!!)
-    return connectionStatus
-}
-
-fun release() {
-    unsubscribe()
-    scope?.cancel()
-}
-
-override fun onCleared() {
-    release()
-    super.onCleared()
-}
-}*/
 }

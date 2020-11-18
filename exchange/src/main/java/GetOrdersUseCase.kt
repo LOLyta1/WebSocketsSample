@@ -1,18 +1,16 @@
 package com.tsivileva.nata.exchange
 
 import android.content.Context
-import com.tsivileva.nata.core.OrderRepository
 import com.tsivileva.nata.core.SocketEvents
 import com.tsivileva.nata.core.model.Currency
 import com.tsivileva.nata.core.model.dto.Order
-import dagger.hilt.android.qualifiers.ApplicationContext
+import com.tsivileva.nata.network.OrderRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
 import javax.inject.Inject
 
 class GetOrdersUseCase @Inject constructor(
-    private val repository: OrderRepository,
-    @ApplicationContext private val context: Context
+    private val repository: OrderRepository
 ) {
     suspend operator fun invoke(currencies: Pair<Currency, Currency>): Flow<SocketEvents<Order>> {
         repository.currencies = currencies
@@ -21,15 +19,20 @@ class GetOrdersUseCase @Inject constructor(
                 deleteEmpty(it.data.bids)
                 deleteEmpty(it.data.ask)
                 true
-            }else{
+            } else {
                 false
             }
         }
     }
 
-    suspend fun cancel(){
+    suspend fun unsubscribe() {
+        repository.unsubscribe()
+    }
+
+    private suspend fun cancel(){
         repository.cancel()
     }
+
 
     private fun deleteEmpty(list: List<List<String>>): List<List<String>> {
         return list.toSet().filter {

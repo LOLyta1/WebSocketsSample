@@ -1,10 +1,9 @@
-package com.tsivileva.nata.core
+package com.tsivileva.nata.core.utils
 
 import com.tsivileva.nata.core.model.Exchange
 import com.tsivileva.nata.core.model.ExchangeType
 import com.tsivileva.nata.core.model.Statistic
 import com.tsivileva.nata.core.model.dto.Order
-import java.lang.Exception
 
 fun Order.getStatistic(): Statistic {
     val statistic = Statistic()

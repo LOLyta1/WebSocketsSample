@@ -4,7 +4,6 @@ plugins {
     id 'kotlinx-serialization'
 }
 import Dependency
-
 android {
     compileSdkVersion Config.compileSdkVersion
 

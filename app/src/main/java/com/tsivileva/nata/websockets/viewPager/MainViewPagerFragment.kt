@@ -2,10 +2,10 @@ package com.tsivileva.nata.websockets.viewPager
 
 import android.os.Bundle
 import android.os.Handler
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_IDLE
 import com.tsivileva.nata.exchange.ask.AskFragment
@@ -41,7 +41,8 @@ class MainViewPagerFragment : Fragment() {
                 lifecycle.addObserver(PagerLifecycleLogger(this))
             },
         )
-        binding.pager.adapter =  MainPagerAdapter(fragmentList, requireActivity().supportFragmentManager, lifecycle)
+        binding.pager.adapter =
+            MainPagerAdapter(fragmentList, requireActivity().supportFragmentManager, lifecycle)
 
         binding.bottomNavView.setOnNavigationItemSelectedListener {
             when (it.itemId) {

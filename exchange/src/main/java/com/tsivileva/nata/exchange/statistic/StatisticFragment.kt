@@ -1,35 +1,28 @@
 package com.tsivileva.nata.exchange.statistic
 
-import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsivileva.nata.core.databinding.FragmentExchangeBinding
-import com.tsivileva.nata.core.model.ConnectionStatus
-import com.tsivileva.nata.core.model.Currency
+import com.tsivileva.nata.core.model.NetworkResponse
+import com.tsivileva.nata.exchange.com.tsivileva.nata.exchange.getCurrencyPair
+import com.tsivileva.nata.exchange.com.tsivileva.nata.exchange.setOnCurrencySelectListener
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
-import timber.log.Timber
-import java.lang.Exception
 
 @AndroidEntryPoint
-class StatisticFragment : Fragment() {/*
-    private val viewModel by viewModels<StatisticViewModel>()
+class StatisticFragment : Fragment() {
+    val viewModel by viewModels<StatisticViewModel>()
+
     private var _binding: FragmentExchangeBinding? = null
     private val binding get() = _binding!!
-    private val askAdapter: StatisticRecyclerAdapter? = StatisticRecyclerAdapter()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
+    private val statisticAdapter: StatisticRecyclerAdapter? = StatisticRecyclerAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,93 +32,52 @@ class StatisticFragment : Fragment() {/*
         return binding.root
     }
 
+    @ExperimentalCoroutinesApi
     @InternalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        initObservers()
-        initSpinner()
+
+        binding.spinner.setOnCurrencySelectListener {
+            viewModel.unsubscribe()
+            viewModel.load(it)
+        }
+
+        viewModel.orders.observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResponse.Loading -> {
+                    setLoadingState()
+                }
+
+                is NetworkResponse.Successful -> {
+                    removeLoadingState()
+                    statisticAdapter?.addToList(it.data)
+                    binding.currencyRv.smoothScrollToPosition(
+                        statisticAdapter?.itemCount ?: 0
+                    )
+                }
+
+                is NetworkResponse.Error -> {
+                    removeLoadingState()
+                    Toast.makeText(context, "Error:${it.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     private fun initRecyclerView() {
-        binding.currenceRecyclerView.apply {
+        binding.currencyRv.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            adapter = askAdapter
+            adapter = statisticAdapter
         }
     }
-
-    @InternalCoroutinesApi
-    private fun initObservers() {
-        viewModel.subscribeOnEvents().observe(viewLifecycleOwner) {
-            when (it) {
-                ConnectionStatus.Opened -> {
-                    Timber.d("Connection was opened")
-                    subscribeOnStatistic()
-                }
-
-                ConnectionStatus.Closed -> {
-                    Timber.d("Connection was closed")
-                }
-
-                is ConnectionStatus.Failed -> {
-                    viewModel.unsubscribe()
-                }
-            }
-        }
-    }
-
-    @InternalCoroutinesApi
-    private fun subscribeOnStatistic() {
-        try {
-            setLoadingState()
-            val currencies = binding.currencySpinner.getCurrencyPair()
-            viewModel.getStatistic(currencies).observe(viewLifecycleOwner) {
-                askAdapter?.addToList(it)
-                binding.currenceRecyclerView.smoothScrollToPosition(askAdapter?.itemCount ?: 0)
-            }
-        } catch (e: Exception) {
-            Timber.d("$e")
-            e.printStackTrace()
-        }
-    }
-
-
-    @InternalCoroutinesApi
-    fun initSpinner() {
-        val adapter = ArrayAdapter.createFromResource(
-            requireContext(),
-            com.tsivileva.nata.core.R.array.exchange,
-            android.R.layout.simple_dropdown_item_1line
-        )
-        binding.currencySpinner.apply {
-            this.adapter = adapter
-            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    askAdapter?.clear()
-                    viewModel.getStatistic(getCurrencyPair())
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                }
-            }
-        }
-    }
-
-    private fun Spinner.getCurrencyPair() = when (this.selectedItemPosition) {
-        0 -> Pair(Currency.Bitcoin, Currency.Tether)
-        1 -> Pair(Currency.BinanceCoin, Currency.Bitcoin)
-        2 -> Pair(Currency.Ethereum, Currency.Bitcoin)
-        else -> Pair(Currency.Bitcoin, Currency.Tether)
-    }
-
 
     private fun setLoadingState() {
-//TODO: implement this
+        binding.loader.visibility = View.VISIBLE
+    }
+
+    private fun removeLoadingState() {
+        binding.loader.visibility = View.GONE
     }
 
     override fun onPause() {
@@ -133,10 +85,10 @@ class StatisticFragment : Fragment() {/*
         viewModel.unsubscribe()
     }
 
-    @InternalCoroutinesApi
     override fun onResume() {
         super.onResume()
-        subscribeOnStatistic()
+        viewModel.load(
+            binding.spinner.getCurrencyPair()
+        )
     }
-    */
 }

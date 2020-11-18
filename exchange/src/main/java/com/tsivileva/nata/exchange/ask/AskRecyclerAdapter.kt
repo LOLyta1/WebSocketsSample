@@ -5,11 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.tsivileva.nata.core.model.Exchange
+import com.tsivileva.nata.exchange.com.tsivileva.nata.exchange.EVEN_RECYCLER_ITEM
+import com.tsivileva.nata.exchange.com.tsivileva.nata.exchange.ODD_RECYCLER_ITEM
 import com.tsivileva.nata.exchange.databinding.ItemAskLayoutBinding
 import com.tsivileva.nata.exchange.databinding.ItemAskOddLayoutBinding
-
-private const val EVEN_ITEM = 0
-private const val ODD_ITEM = 1
 
 class AskRecyclerAdapter : RecyclerView.Adapter<AskRecyclerAdapter.AskEvenViewHolder>() {
 
@@ -18,7 +17,7 @@ class AskRecyclerAdapter : RecyclerView.Adapter<AskRecyclerAdapter.AskEvenViewHo
     fun addToList(item: Exchange) {
         list.addAll(item.ordersData)
         notifyItemRangeChanged(
-            list.lastIndex+1 - item.ordersData.count(),
+            list.lastIndex + 1 - item.ordersData.count(),
             item.exchangeSymbol.count()
         )
     }
@@ -30,15 +29,15 @@ class AskRecyclerAdapter : RecyclerView.Adapter<AskRecyclerAdapter.AskEvenViewHo
 
     override fun getItemViewType(position: Int): Int {
         return if (position % 2 == 0) {
-            EVEN_ITEM
+            EVEN_RECYCLER_ITEM
         } else {
-            ODD_ITEM
+            ODD_RECYCLER_ITEM
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AskEvenViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = if (viewType == EVEN_ITEM) {
+        val binding = if (viewType == EVEN_RECYCLER_ITEM) {
             ItemAskLayoutBinding.inflate(inflater, parent, false)
         } else {
             ItemAskOddLayoutBinding.inflate(inflater, parent, false)

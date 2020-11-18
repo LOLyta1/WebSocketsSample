@@ -1,25 +1,20 @@
 package com.tsivileva.nata.core
 
-import androidx.lifecycle.LiveData
-import com.tsivileva.nata.core.model.dto.WebSocketCommand
-import com.tsivileva.nata.core.model.ConnectionStatus
 import com.tsivileva.nata.core.model.Currency
+import com.tsivileva.nata.core.model.SocketRequest
 import com.tsivileva.nata.core.model.dto.OrderSnapshot
-import com.tsivileva.nata.core.model.dto.SocketRequest
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import okhttp3.Response
+import okhttp3.WebSocket
+import okio.ByteString
+
 
 interface NetworkClient {
-    interface WebSocket<T> {
-        /*        fun createRequest(command: WebSocketCommand, params: List<String>): SocketRequest
-                fun connect()
-                fun close()
-                fun getStream(): Flow<T>
-                fun subscribeOnConnectionStatus(scope: CoroutineScope): LiveData<ConnectionStatus>
-                var isConnected: Boolean*/
-        fun subscribeOnSocketEvent(): Flow<com.tinder.scarlet.WebSocket.Event>
-        fun sendRequest(request: SocketRequest)
-        fun getData(): Flow<T>
+    interface Socket<T> {
+        var listener: SocketListener<T>
+        suspend fun connect(url: String)
+        suspend fun sendRequest(request: SocketRequest)
+        suspend fun cancel()
     }
 
     interface Rest {
@@ -27,5 +22,23 @@ interface NetworkClient {
             suspend fun load(currencies: Pair<Currency, Currency>): OrderSnapshot
         }
     }
-
 }
+
+interface SocketListener<T> {
+    val flow: Flow<SocketEvents<T>>
+    fun onClosed(webSocket: WebSocket, code: Int, reason: String)
+    fun onOpen(webSocket: WebSocket, response: Response)
+    fun onMessage(webSocket: WebSocket, bytes: ByteString)
+    fun onMessage(webSocket: WebSocket, text: String)
+    fun onClosing(webSocket: WebSocket, code: Int, reason: String)
+    fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?)
+}
+
+sealed class SocketEvents<T> {
+    class Sleep<T> : SocketEvents<T>()
+    class Opened<T> : SocketEvents<T>()
+    class Emitted<T>(var data: T) : SocketEvents<T>()
+    class Closed<T> : SocketEvents<T>()
+    class Failed<T>(var error: Throwable) : SocketEvents<T>()
+}
+

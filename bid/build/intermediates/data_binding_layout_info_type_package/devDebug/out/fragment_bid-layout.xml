@@ -1,1 +1,11 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><Layout layout="fragment_bid" modulePackage="com.tsivileva.nata.exchange" filePath="bid\src\main\res\layout\fragment_bid.xml" directory="layout" isMerge="false" isBindingData="false" rootNodeType="android.widget.FrameLayout"><Targets><Target tag="layout/fragment_bid_0" view="FrameLayout"><Expressions/><location startLine="1" startOffset="0" endLine="21" endOffset="13"/></Target></Targets></Layout>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Layout directory="layout" filePath="bid\src\main\res\layout\fragment_bid.xml"
+    isBindingData="false" isMerge="false" layout="fragment_bid"
+    modulePackage="com.tsivileva.nata.exchange" rootNodeType="android.widget.FrameLayout">
+    <Targets>
+        <Target tag="layout/fragment_bid_0" view="FrameLayout">
+            <Expressions />
+            <location endLine="21" endOffset="13" startLine="1" startOffset="0" />
+        </Target>
+    </Targets>
+</Layout>

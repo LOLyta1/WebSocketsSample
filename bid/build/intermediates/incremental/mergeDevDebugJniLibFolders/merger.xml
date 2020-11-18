@@ -1,2 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\Nata\AndroidStudioProjects\WebSockets\bid\src\main\jniLibs"/></dataSet><dataSet config="dev" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\Nata\AndroidStudioProjects\WebSockets\bid\src\dev\jniLibs"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\Nata\AndroidStudioProjects\WebSockets\bid\src\debug\jniLibs"/></dataSet><dataSet config="devDebug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\Nata\AndroidStudioProjects\WebSockets\bid\src\devDebug\jniLibs"/></dataSet></merger>
+<merger version="3">
+    <dataSet config="main"
+        ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~">
+        <source path="C:\Users\Nata\AndroidStudioProjects\WebSockets\bid\src\main\jniLibs" />
+    </dataSet>
+    <dataSet config="dev"
+        ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~">
+        <source path="C:\Users\Nata\AndroidStudioProjects\WebSockets\bid\src\dev\jniLibs" />
+    </dataSet>
+    <dataSet config="debug"
+        ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~">
+        <source path="C:\Users\Nata\AndroidStudioProjects\WebSockets\bid\src\debug\jniLibs" />
+    </dataSet>
+    <dataSet config="devDebug"
+        ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~">
+        <source path="C:\Users\Nata\AndroidStudioProjects\WebSockets\bid\src\devDebug\jniLibs" />
+    </dataSet>
+</merger>

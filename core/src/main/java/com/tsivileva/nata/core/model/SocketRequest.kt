@@ -1,4 +1,4 @@
-package com.tsivileva.nata.core.model.dto
+package com.tsivileva.nata.core.model
 
 import com.google.gson.annotations.SerializedName
 
@@ -8,8 +8,8 @@ data class SocketRequest(
     @SerializedName("params") val params: List<String> = listOf()
 )
 
-sealed class WebSocketCommand(val name: String) {
-    object Subscribe : WebSocketCommand("SUBSCRIBE")
-    object Unsubscribe : WebSocketCommand("UNSUBSCRIBE")
+sealed class SocketCommand(val name: String) {
+    object Subscribe : SocketCommand("SUBSCRIBE")
+    object Unsubscribe : SocketCommand("UNSUBSCRIBE")
 }
 

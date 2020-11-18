@@ -1,28 +1,22 @@
 package com.tsivileva.nata.exchange.ask
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.tsivileva.nata.core.R
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsivileva.nata.core.databinding.FragmentExchangeBinding
-import com.tsivileva.nata.core.model.Currency
-import com.tsivileva.nata.core.model.ConnectionStatus
+import com.tsivileva.nata.core.model.NetworkResponse
+import com.tsivileva.nata.exchange.com.tsivileva.nata.exchange.getCurrencyPair
+import com.tsivileva.nata.exchange.com.tsivileva.nata.exchange.setOnCurrencySelectListener
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.InternalCoroutinesApi
-import timber.log.Timber
-import java.lang.Exception
 
 @AndroidEntryPoint
 class AskFragment : Fragment() {
-   /* val viewModel by viewModels<AskViewModel>()
+    private val viewModel by viewModels<AskViewModel>()
     private var _binding: FragmentExchangeBinding? = null
     private val binding get() = _binding!!
     private val askAdapter: AskRecyclerAdapter? = AskRecyclerAdapter()
@@ -35,103 +29,63 @@ class AskFragment : Fragment() {
         return binding.root
     }
 
-    @InternalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        initObservers()
-        initSpinner()
-        subscribeOnOrders()
+
+        binding.spinner.setSelection(-1)
+
+        binding.spinner.setOnCurrencySelectListener {
+            viewModel.unsubscribe()
+            viewModel.load(it)
+        }
+
+        viewModel.orders.observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResponse.Loading -> {
+                    setLoadingState()
+                }
+
+                is NetworkResponse.Successful -> {
+                    removeLoadingState()
+                    askAdapter?.addToList(it.data)
+                    binding.currencyRv.smoothScrollToPosition(
+                        askAdapter?.itemCount ?: 0
+                    )
+                }
+
+                is NetworkResponse.Error -> {
+                    removeLoadingState()
+                    Toast.makeText(context, "Error:${it.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     private fun initRecyclerView() {
-        binding.currenceRecyclerView.apply {
+        binding.currencyRv.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = askAdapter
         }
     }
 
-    @InternalCoroutinesApi
-    private fun initObservers() {
-        viewModel.subscribeOnEvents().observe(viewLifecycleOwner) {
-            when (it) {
-                ConnectionStatus.Opened -> {
-                    Timber.d("Connection was opened")
-                }
-
-                ConnectionStatus.Closed -> {
-                    Timber.d("Connection was closed")
-                }
-
-                is ConnectionStatus.Failed -> {
-                    viewModel.unsubscribe()
-                }
-            }
-        }
-    }
-
-
-    @InternalCoroutinesApi
-    private fun subscribeOnOrders() {
-        try {
-            setLoadingState()
-            val currencies = binding.currencySpinner.getCurrencyPair()
-            viewModel.getOrders(currencies).observe(viewLifecycleOwner) {
-                askAdapter?.addToList(it)
-                binding.currenceRecyclerView.smoothScrollToPosition(askAdapter?.itemCount ?: 0)
-            }
-        } catch (e: Exception) {
-            Timber.d("$e")
-            e.printStackTrace()
-        }
-    }
-    //TODO: вынести в extension
-
-    @InternalCoroutinesApi
-    fun initSpinner() {
-        val adapter = ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.exchange,
-            android.R.layout.simple_dropdown_item_1line
-        )
-        binding.currencySpinner.apply {
-            this.adapter = adapter
-            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    askAdapter?.clear()
-                    viewModel.getOrders(getCurrencyPair())
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                }
-            }
-        }
-    }
-
-    private fun Spinner.getCurrencyPair() = when (this.selectedItemPosition) {
-        0 -> Pair(Currency.Bitcoin, Currency.Tether)
-        1 -> Pair(Currency.BinanceCoin, Currency.Bitcoin)
-        2 -> Pair(Currency.Ethereum, Currency.Bitcoin)
-        else -> Pair(Currency.Bitcoin, Currency.Tether)
-    }
-
-
     private fun setLoadingState() {
-//TODO: implement this
+        binding.loader.visibility = View.VISIBLE
+    }
+
+    private fun removeLoadingState() {
+        binding.loader.visibility = View.GONE
     }
 
     override fun onPause() {
         super.onPause()
+        viewModel.unsubscribe()
     }
 
-    @InternalCoroutinesApi
     override fun onResume() {
         super.onResume()
-    }*/
-
+        viewModel.load(
+            binding.spinner.getCurrencyPair()
+        )
+    }
 }

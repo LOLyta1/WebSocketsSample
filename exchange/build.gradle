@@ -5,8 +5,6 @@ plugins {
     id 'dagger.hilt.android.plugin'
 }
 
-import Dependency
-
 android {
     compileSdkVersion Config.compileSdkVersion
 
@@ -46,7 +44,7 @@ android {
         }
     }
 }
-
+import Dependency
 dependencies {
     implementation project(':core')
     implementation project(':network')

@@ -1,12 +1,9 @@
 package com.tsivileva.nata.network.rest
 
 import android.content.Context
-import com.tinder.scarlet.lifecycle.android.AndroidLifecycle
 import com.tsivileva.nata.core.NetworkClient
 import com.tsivileva.nata.core.model.Currency
 import com.tsivileva.nata.core.model.dto.OrderSnapshot
-import dagger.hilt.android.qualifiers.ActivityContext
-import java.lang.IllegalArgumentException
 import java.util.*
 
 const val DEFAULT_ORDER_LIMIT = 1000

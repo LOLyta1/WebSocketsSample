@@ -2,23 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        app:showAsAction="ifRoom"
-        android:icon="@android:drawable/ic_input_add"
         android:id="@+id/menuItemBid"
-        android:title="@string/bid" />
+        android:icon="@android:drawable/ic_input_add"
+        android:title="@string/bid"
+        app:showAsAction="ifRoom" />
 
     <item
-        app:showAsAction="ifRoom"
-        android:icon="@android:drawable/ic_delete"
         android:id="@+id/menuItemAsk"
-        android:title="@string/ask"/>
+        android:icon="@android:drawable/ic_menu_revert"
+        android:title="@string/ask"
+        app:showAsAction="ifRoom" />
 
 
     <item
-        app:showAsAction="ifRoom"
-        android:icon="@android:drawable/ic_delete"
         android:id="@+id/menuItemDiff"
-        android:title="@string/ask"/>
+        android:icon="@android:drawable/ic_menu_info_details"
+        android:title="@string/diff"
+        app:showAsAction="ifRoom" />
 
     <!--
         <item android:id="@+id/details"

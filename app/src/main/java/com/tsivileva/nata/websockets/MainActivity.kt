@@ -16,8 +16,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val fragment =
-            supportFragmentManager.fragments.any { it.tag == MainViewPagerFragment::class.java.name }
+        val fragment = supportFragmentManager.fragments.any { it.tag == MainViewPagerFragment::class.java.name }
 
         if (!fragment) {
             supportFragmentManager.beginTransaction().add(

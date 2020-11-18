@@ -1,1 +1,38 @@
-[{"name":"ebbf18f8e3b5c9349329f8e5f5d602e0ea8d3850","index":0,"scopes":["PROJECT"],"types":["CLASSES"],"format":"DIRECTORY","present":true},{"name":"b776b7c02eb7133ee0627e2137b5085baff307ba","index":1,"scopes":["PROJECT"],"types":["CLASSES"],"format":"DIRECTORY","present":true},{"name":"e3c3c3f70c2e974d7cea8355fa3b577b476ab924","index":2,"scopes":["PROJECT"],"types":["CLASSES"],"format":"DIRECTORY","present":true}]
+[
+  {
+    "name": "ebbf18f8e3b5c9349329f8e5f5d602e0ea8d3850",
+    "index": 0,
+    "scopes": [
+      "PROJECT"
+    ],
+    "types": [
+      "CLASSES"
+    ],
+    "format": "DIRECTORY",
+    "present": true
+  },
+  {
+    "name": "b776b7c02eb7133ee0627e2137b5085baff307ba",
+    "index": 1,
+    "scopes": [
+      "PROJECT"
+    ],
+    "types": [
+      "CLASSES"
+    ],
+    "format": "DIRECTORY",
+    "present": true
+  },
+  {
+    "name": "e3c3c3f70c2e974d7cea8355fa3b577b476ab924",
+    "index": 2,
+    "scopes": [
+      "PROJECT"
+    ],
+    "types": [
+      "CLASSES"
+    ],
+    "format": "DIRECTORY",
+    "present": true
+  }
+]
