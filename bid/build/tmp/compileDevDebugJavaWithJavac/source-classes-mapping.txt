@@ -1,0 +1,4 @@
+com/tsivileva/nata/exchange/BuildConfig.java
+ com.tsivileva.nata.exchange.BuildConfig
+com/tsivileva/nata/exchange/databinding/FragmentBidBinding.java
+ com.tsivileva.nata.exchange.databinding.FragmentBidBinding

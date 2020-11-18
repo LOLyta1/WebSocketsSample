@@ -1,0 +1,6 @@
+R_DEF: Internal format may change without notice
+local
+id bidFragment
+id nav_bid
+layout fragment_bid
+navigation nav_bid

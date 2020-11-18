@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.*
 import timber.log.Timber
 import java.lang.Exception
 import javax.inject.Inject
+/*
 
 class OrderRepository @Inject constructor(
     private val webSocketClient: OrderWebSocketClient,
@@ -25,7 +26,7 @@ class OrderRepository @Inject constructor(
 ) {
 
     private var currencies: Pair<Currency, Currency> = Pair(Currency.Bitcoin, Currency.Bitcoin)
-    private var pair = Pair(Currency.Bitcoin, Currency.Tether)
+
 
     private fun createRequestStringForOrders(
         currencies: Pair<Currency, Currency>,
@@ -138,3 +139,4 @@ class OrderRepository @Inject constructor(
 
 
 }
+*/

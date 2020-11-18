@@ -1,0 +1,22 @@
+com/tsivileva/nata/statistic/databinding/ItemOddBinding.java
+ com.tsivileva.nata.statistic.databinding.ItemOddBinding
+hilt_aggregated_deps/com_tsivileva_nata_ask_AskViewModel_HiltModuleModuleDeps.java
+ hilt_aggregated_deps.com_tsivileva_nata_ask_AskViewModel_HiltModuleModuleDeps
+com/tsivileva/nata/statistic/databinding/FragmentAskBinding.java
+ com.tsivileva.nata.statistic.databinding.FragmentAskBinding
+com/tsivileva/nata/statistic/BuildConfig.java
+ com.tsivileva.nata.statistic.BuildConfig
+com/tsivileva/nata/ask/AskViewModel_AssistedFactory_Factory.java
+ com.tsivileva.nata.ask.AskViewModel_AssistedFactory_Factory
+hilt_aggregated_deps/com_tsivileva_nata_ask_AskFragment_GeneratedInjectorModuleDeps.java
+ hilt_aggregated_deps.com_tsivileva_nata_ask_AskFragment_GeneratedInjectorModuleDeps
+com/tsivileva/nata/ask/AskViewModel_HiltModule.java
+ com.tsivileva.nata.ask.AskViewModel_HiltModule
+com/tsivileva/nata/ask/GetAskUseCase_Factory.java
+ com.tsivileva.nata.ask.GetAskUseCase_Factory
+com/tsivileva/nata/ask/AskFragment_GeneratedInjector.java
+ com.tsivileva.nata.ask.AskFragment_GeneratedInjector
+com/tsivileva/nata/ask/Hilt_AskFragment.java
+ com.tsivileva.nata.ask.Hilt_AskFragment
+com/tsivileva/nata/ask/AskViewModel_AssistedFactory.java
+ com.tsivileva.nata.ask.AskViewModel_AssistedFactory

@@ -1,31 +1,28 @@
 package com.tsivileva.nata.network.rest
 
+import android.content.Context
 import com.tinder.scarlet.lifecycle.android.AndroidLifecycle
 import com.tsivileva.nata.core.NetworkClient
+import com.tsivileva.nata.core.model.Currency
 import com.tsivileva.nata.core.model.dto.OrderSnapshot
+import dagger.hilt.android.qualifiers.ActivityContext
 import java.lang.IllegalArgumentException
 import java.util.*
 
 const val DEFAULT_ORDER_LIMIT = 1000
 
 class OrderRestClient(
-    private val api: RestApi
-) : NetworkClient.Rest<OrderSnapshot> {
+    private val api: RestApi,
+    private var context: Context
+) : NetworkClient.Rest.OrderRest {
 
-    private var symbol = ""
-    private var limit: Int = DEFAULT_ORDER_LIMIT
+    override suspend fun load(currencies: Pair<Currency, Currency>): OrderSnapshot {
+        val limit = DEFAULT_ORDER_LIMIT
+        val first = currencies.first.getName(context)
+        val second = currencies.second.getName(context)
+        val symbol = "${first}${second}".toUpperCase(Locale.ROOT)
 
-    suspend fun loadSnapshot(from: String, to: String, limit: Int = DEFAULT_ORDER_LIMIT): OrderSnapshot {
-        symbol = "${from}${to}".toUpperCase(Locale.ROOT)
-        this.limit = limit
-        return getData()
-    }
+        return api.getOrders(symbol, limit)
 
-    override suspend fun getData(): OrderSnapshot {
-        if(symbol.isNotBlank()){
-              return  api.getOrders(symbol, limit)
-        }else {
-            throw IllegalArgumentException("symbol is empty! please set it to NetworkClient")
-        }
     }
 }

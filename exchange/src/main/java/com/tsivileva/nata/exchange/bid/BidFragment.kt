@@ -1,6 +1,5 @@
 package com.tsivileva.nata.exchange.bid
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,18 +13,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsivileva.nata.core.R
 import com.tsivileva.nata.core.databinding.FragmentExchangeBinding
 import com.tsivileva.nata.core.model.Currency
-import com.tsivileva.nata.core.model.ConnectionStatus
 import com.tsivileva.nata.core.model.NetworkResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.InternalCoroutinesApi
 import timber.log.Timber
-import java.lang.Exception
 
 @AndroidEntryPoint
 class BidFragment : Fragment() {
-    private val viewModel by viewModels<BidViewModel>()
+     val viewModel by viewModels<BidViewModel>()
     private var _binding: FragmentExchangeBinding? = null
     private val binding get() = _binding!!
     private val askAdapter: BidRecyclerAdapter? = BidRecyclerAdapter()
@@ -43,7 +39,22 @@ class BidFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        initSpinner()
+        viewModel.load(binding.currencySpinner.getCurrencyPair())
+        viewModel.orders.observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResponse.Successful -> {
+                    Timber.d("NEW successfull")
+                    askAdapter?.addToList(it.data)
+                }
+                is NetworkResponse.Error -> {
+                    Timber.d("NEW error   ${it.message}")
+                }
+                is NetworkResponse.Loading -> {
+                    Timber.d("NEW loading")
+                }
+            }
+        }
+       initSpinner()
     }
 
 
@@ -54,6 +65,41 @@ class BidFragment : Fragment() {
         }
     }
 
+
+    private fun Spinner.getCurrencyPair() = when (this.selectedItemPosition) {
+        0 -> Pair(Currency.Bitcoin, Currency.Tether)
+        1 -> Pair(Currency.BinanceCoin, Currency.Bitcoin)
+        2 -> Pair(Currency.Ethereum, Currency.Bitcoin)
+        else -> Pair(Currency.Bitcoin, Currency.Tether)
+    }
+    @InternalCoroutinesApi
+    fun initSpinner() {
+        val adapter = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.exchange,
+            android.R.layout.simple_dropdown_item_1line
+        )
+        binding.currencySpinner.apply {
+            this.adapter = adapter
+            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                     askAdapter?.clear()
+                   viewModel.cancel()
+                    viewModel.load(getCurrencyPair())
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                }
+            }
+        }
+    }
+
+/*
     @FlowPreview
     @ExperimentalCoroutinesApi
     @InternalCoroutinesApi
@@ -124,10 +170,10 @@ class BidFragment : Fragment() {
 
     @InternalCoroutinesApi
     override fun onAttachFragment(childFragment: Fragment) {
-        super.onAttachFragment(childFragment)/*
+        super.onAttachFragment(childFragment)*//*
         if (!viewModel.isConnected) {
             subscribeOnOrders()
-        }*/
+        }*//*
     }
 
     @FlowPreview
@@ -136,7 +182,7 @@ class BidFragment : Fragment() {
         super.onResume()
 
         subscribeOnOrders()
-    }
+    }*/
 
 
 }

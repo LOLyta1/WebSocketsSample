@@ -9,3 +9,4 @@ sealed class ConnectionStatus {
     object Closed : ConnectionStatus()
     class Failed(var error: Throwable) : ConnectionStatus()
 }
+
