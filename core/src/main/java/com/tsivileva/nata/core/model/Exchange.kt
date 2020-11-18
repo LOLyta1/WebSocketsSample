@@ -21,15 +21,11 @@ data class Exchange(
     }
 }
 
-sealed class Currency(private val nameResourceId: Int) {
-    fun getName(context: Context): String {
-        return context.resources.getString(nameResourceId)
-    }
-
-    object Bitcoin : Currency(R.string.bitCoin)
-    object BinanceCoin : Currency(R.string.binanceCoin)
-    object Ethereum : Currency(R.string.ethereum)
-    object Tether : Currency(R.string.tether)
+sealed class Currency(val symbol:String) {
+    object Bitcoin : Currency("BTC")
+    object BinanceCoin : Currency("BNB")
+    object Ethereum : Currency("ETH")
+    object Tether : Currency("USDT")
 }
 
 

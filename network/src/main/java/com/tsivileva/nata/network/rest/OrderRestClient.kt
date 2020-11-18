@@ -15,8 +15,8 @@ class OrderRestClient(
 
     override suspend fun load(currencies: Pair<Currency, Currency>): OrderSnapshot {
         val limit = DEFAULT_ORDER_LIMIT
-        val first = currencies.first.getName(context)
-        val second = currencies.second.getName(context)
+        val first = currencies.first.symbol
+        val second = currencies.second.symbol
         val symbol = "${first}${second}".toUpperCase(Locale.ROOT)
 
         return api.getOrders(symbol, limit)

@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="bitCoin">BTC</string>
-    <string name="binanceCoin">BNB</string>
-    <string name="ethereum">ETH</string>
-    <string name="tether">USDT</string>
-
     <string name="connectionClosed">WebSocket connection is closed</string>
     <string name="connectionFailed">WebSocket connection is failed</string>
     <string name="httpFailed">HTTP request is failed</string>

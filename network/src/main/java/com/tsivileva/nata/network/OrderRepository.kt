@@ -6,6 +6,7 @@ import com.tsivileva.nata.core.model.Currency
 import com.tsivileva.nata.core.model.SocketCommand
 import com.tsivileva.nata.core.model.SocketRequest
 import com.tsivileva.nata.core.model.dto.Order
+import com.tsivileva.nata.network.WebSocketUtils.createOrdersParams
 import dagger.hilt.android.qualifiers.ActivityContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
@@ -41,10 +42,10 @@ class OrderRepository @Inject constructor(
 
     private fun getUrl(): String {
         return "$BASE_WEB_SOCKET_URL${
-            currencies.first.getName(context).toLowerCase(Locale.ROOT)
+            currencies.first.symbol.toLowerCase(Locale.ROOT)
         }" +
                 "${
-                    currencies.second.getName(context).toLowerCase(Locale.ROOT)
+                    currencies.second.symbol.toLowerCase(Locale.ROOT)
                 }$WEB_SOCKET_ORDERS_ENDPOINT_PATH"
     }
 
@@ -53,24 +54,15 @@ class OrderRepository @Inject constructor(
     }
 
     override suspend fun subscribe() {
-        val params = createOrdersParams(currencies, context)
+        val params = createOrdersParams(currencies)
         val request = createRequest(SocketCommand.Subscribe, listOf(params))
         socketClient.sendRequest(request)
     }
 
     override suspend fun unsubscribe() {
-        val params = createOrdersParams(currencies, context)
+        val params = createOrdersParams(currencies)
         val request = createRequest(SocketCommand.Unsubscribe, listOf(params))
         socketClient.sendRequest(request)
-    }
-
-    private fun createOrdersParams(
-        currencies: Pair<Currency, Currency>,
-        context: Context
-    ): String {
-        return currencies.first.getName(context) +
-                currencies.second.getName(context) +
-                WEB_SOCKET_ORDERS_ENDPOINT_PATH
     }
 
     private fun createRequest(
@@ -87,7 +79,7 @@ class OrderRepository @Inject constructor(
             params = lowerCaseParams
         )
     }
-
+//TODO:to here
     override suspend fun close() {
         generateNewConnectionId()
         socketClient.listener.flow = null
