@@ -1,5 +1,5 @@
-public class Dependency {
-    public static final String KOTLIN_VERSION = "1.4.10";
+public class Deps {
+    public static final String KOTLIN_VERSION = "1.4.32";
     public static final String KOTLIN_SERIALIZATION_VERSION = "1.0.1";
     public static final String ANDROID_CORE_VERSION = "1.3.2";
     public static final String ANDROID_COROUTINES_VERSION = "1.3.9";

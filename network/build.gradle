@@ -43,32 +43,32 @@ android {
         }
     }
 }
-import Dependency
+
 dependencies {
     implementation project(':core')
 
-    implementation Dependency.kotlin
-    implementation Dependency.androidCore
+    implementation Deps.kotlin
+    implementation Deps.androidCore
 
-    implementation Dependency.hilt
-    kapt Dependency.hiltKapt
-    kapt Dependency.kaptHiltViewModel
+    implementation Deps.hilt
+    kapt Deps.hiltKapt
+    kapt Deps.kaptHiltViewModel
 
-    implementation Dependency.okHttp
-    implementation Dependency.okHttpLoggingInterceptor
-    implementation Dependency.retrofit
-    implementation Dependency.retrofitConverter
+    implementation Deps.okHttp
+    implementation Deps.okHttpLoggingInterceptor
+    implementation Deps.retrofit
+    implementation Deps.retrofitConverter
 
-    implementation Dependency.scarlet
-    implementation Dependency.scarletGsonMessageAdapter
-    implementation Dependency.scarletCoroutinesStreamAdapter
-    implementation Dependency.scarletWebsocketOkHttp
-    implementation Dependency.scarletLifecycle
+    implementation Deps.scarlet
+    implementation Deps.scarletGsonMessageAdapter
+    implementation Deps.scarletCoroutinesStreamAdapter
+    implementation Deps.scarletWebsocketOkHttp
+    implementation Deps.scarletLifecycle
 
-    implementation Dependency.lifecycle
+    implementation Deps.lifecycle
 
-    implementation Dependency.timber
-    testImplementation Dependency.JUnit
-    androidTestImplementation Dependency.JUnitTest
-    androidTestImplementation Dependency.espresso
+    implementation Deps.timber
+    testImplementation Deps.JUnit
+    androidTestImplementation Deps.JUnitTest
+    androidTestImplementation Deps.espresso
 }

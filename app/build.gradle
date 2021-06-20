@@ -5,7 +5,8 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
     id 'dagger.hilt.android.plugin'
 }
-import Dependency
+
+
 android {
     compileSdkVersion Config.compileSdkVersion
 
@@ -52,24 +53,24 @@ dependencies {
     implementation project(':network')
     implementation project(':exchange')
 
-    implementation Dependency.kotlin
-    implementation Dependency.androidCore
+    implementation Deps.kotlin
+    implementation Deps.androidCore
 
-    implementation Dependency.hilt
-    kapt Dependency.hiltKapt
-    implementation Dependency.hiltViewModel
-    kapt Dependency.kaptHiltViewModel
-    annotationProcessor Dependency.annotationProcessorHiltViewModel
+    implementation Deps.hilt
+    kapt Deps.hiltKapt
+    implementation Deps.hiltViewModel
+    kapt Deps.kaptHiltViewModel
+    annotationProcessor Deps.annotationProcessorHiltViewModel
 
-    implementation Dependency.okHttp
+    implementation Deps.okHttp
 
-    implementation Dependency.material
+    implementation Deps.material
 
-    implementation Dependency.navigation
-    implementation Dependency.navigationUI
+    implementation Deps.navigation
+    implementation Deps.navigationUI
 
-    implementation Dependency.timber
-    testImplementation Dependency.JUnit
-    androidTestImplementation Dependency.JUnitTest
-    androidTestImplementation Dependency.espresso
+    implementation Deps.timber
+    testImplementation Deps.JUnit
+    androidTestImplementation Deps.JUnitTest
+    androidTestImplementation Deps.espresso
 }

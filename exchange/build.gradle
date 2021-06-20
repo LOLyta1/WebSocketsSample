@@ -44,28 +44,28 @@ android {
         }
     }
 }
-import Dependency
+
 dependencies {
     implementation project(':core')
     implementation project(':network')
-    implementation Dependency.kotlin
-    implementation Dependency.androidCore
-    implementation Dependency.androidCoroutines
+    implementation Deps.kotlin
+    implementation Deps.androidCore
+    implementation Deps.androidCoroutines
 
-    implementation Dependency.hilt
-    kapt Dependency.hiltKapt
-    implementation Dependency.hiltViewModel
-    kapt Dependency.kaptHiltViewModel
-    annotationProcessor Dependency.annotationProcessorHiltViewModel
+    implementation Deps.hilt
+    kapt Deps.hiltKapt
+    implementation Deps.hiltViewModel
+    kapt Deps.kaptHiltViewModel
+    annotationProcessor Deps.annotationProcessorHiltViewModel
 
-    implementation Dependency.scarlet
+    implementation Deps.scarlet
 
-    implementation Dependency.material
+    implementation Deps.material
 
-    implementation Dependency.navigation
+    implementation Deps.navigation
 
-    implementation Dependency.timber
-    testImplementation Dependency.JUnit
-    androidTestImplementation Dependency.JUnitTest
-    androidTestImplementation Dependency.espresso
+    implementation Deps.timber
+    testImplementation Deps.JUnit
+    androidTestImplementation Deps.JUnitTest
+    androidTestImplementation Deps.espresso
 }
