@@ -1,9 +1,9 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
-
-import Dependency
 
 android {
     compileSdkVersion Config.compileSdkVersion
@@ -31,13 +31,41 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    flavorDimensions "project"
+    productFlavors {
+        dev {
+        }
+        prod {
+        }
+    }
 }
 
 dependencies {
-    implementation Dependency.kotlin
-    implementation Dependency.androidCore
-    implementation Dependency.material
-    testImplementation Dependency.JUnit
-    androidTestImplementation Dependency.JUnitTest
-    androidTestImplementation Dependency.espresso
+    implementation project(':core')
+    implementation project(':network')
+    implementation Deps.kotlin
+    implementation Deps.androidCore
+    implementation Deps.androidCoroutines
+
+    implementation Deps.hilt
+    kapt Deps.hiltKapt
+    implementation Deps.hiltViewModel
+    kapt Deps.kaptHiltViewModel
+    annotationProcessor Deps.annotationProcessorHiltViewModel
+
+    implementation Deps.scarlet
+
+    implementation Deps.material
+
+    implementation Deps.navigation
+
+    implementation Deps.timber
+    testImplementation Deps.JUnit
+    androidTestImplementation Deps.JUnitTest
+    androidTestImplementation Deps.espresso
 }

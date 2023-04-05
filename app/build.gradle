@@ -1,9 +1,11 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'androidx.navigation.safeargs.kotlin'
+    id 'dagger.hilt.android.plugin'
 }
 
-import Dependency
 
 android {
     compileSdkVersion Config.compileSdkVersion
@@ -31,13 +33,44 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    flavorDimensions "project"
+    productFlavors {
+        dev {
+        }
+        prod {
+        }
+    }
+
 }
 
 dependencies {
-    implementation Dependency.kotlin
-    implementation Dependency.androidCore
-    implementation Dependency.material
-    testImplementation Dependency.JUnit
-    androidTestImplementation Dependency.JUnitTest
-    androidTestImplementation Dependency.espresso
+    implementation project(':core')
+    implementation project(':network')
+    implementation project(':exchange')
+
+    implementation Deps.kotlin
+    implementation Deps.androidCore
+
+    implementation Deps.hilt
+    kapt Deps.hiltKapt
+    implementation Deps.hiltViewModel
+    kapt Deps.kaptHiltViewModel
+    annotationProcessor Deps.annotationProcessorHiltViewModel
+
+    implementation Deps.okHttp
+
+    implementation Deps.material
+
+    implementation Deps.navigation
+    implementation Deps.navigationUI
+
+    implementation Deps.timber
+    testImplementation Deps.JUnit
+    androidTestImplementation Deps.JUnitTest
+    androidTestImplementation Deps.espresso
 }

@@ -1,8 +1,9 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
-import Dependency
 
 android {
     compileSdkVersion Config.compileSdkVersion
@@ -29,15 +30,45 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    flavorDimensions "project"
+    productFlavors {
+        dev {
+            buildConfigField "String", "SOCKET_WEB_API_ENDPOINT", "$socketEndpoint"
+            buildConfigField "String", "REST_API_ENDPOINT", "$restEndpoint"
+        }
+        prod {
+            buildConfigField "String", "SOCKET_WEB_API_ENDPOINT", "$socketEndpoint"
+            buildConfigField "String", "REST_API_ENDPOINT", "$restEndpoint"
+        }
+    }
 }
 
 dependencies {
-    implementation Dependency.kotlin
-    implementation Dependency.androidCore
+    implementation project(':core')
 
-    implementation Dependency.scarlet
+    implementation Deps.kotlin
+    implementation Deps.androidCore
 
-    testImplementation Dependency.JUnit
-    androidTestImplementation Dependency.JUnitTest
-    androidTestImplementation Dependency.espresso
+    implementation Deps.hilt
+    kapt Deps.hiltKapt
+    kapt Deps.kaptHiltViewModel
+
+    implementation Deps.okHttp
+    implementation Deps.okHttpLoggingInterceptor
+    implementation Deps.retrofit
+    implementation Deps.retrofitConverter
+
+    implementation Deps.scarlet
+    implementation Deps.scarletGsonMessageAdapter
+    implementation Deps.scarletCoroutinesStreamAdapter
+    implementation Deps.scarletWebsocketOkHttp
+    implementation Deps.scarletLifecycle
+
+    implementation Deps.lifecycle
+
+    implementation Deps.timber
+    testImplementation Deps.JUnit
+    androidTestImplementation Deps.JUnitTest
+    androidTestImplementation Deps.espresso
 }

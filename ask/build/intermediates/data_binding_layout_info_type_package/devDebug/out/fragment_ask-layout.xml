@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Layout directory="layout" filePath="ask\src\main\res\layout\fragment_ask.xml"
+    isBindingData="false" isMerge="false" layout="fragment_ask"
+    modulePackage="com.tsivileva.nata.statistic" rootNodeType="android.widget.FrameLayout">
+    <Targets>
+        <Target tag="layout/fragment_ask_0" view="FrameLayout">
+            <Expressions />
+            <location endLine="23" endOffset="13" startLine="1" startOffset="0" />
+        </Target>
+        <Target id="@+id/getAskBTN" view="Button">
+            <Expressions />
+            <location endLine="12" endOffset="33" startLine="6" startOffset="4" />
+        </Target>
+        <Target id="@+id/stopBTN" view="Button">
+            <Expressions />
+            <location endLine="21" endOffset="33" startLine="15" startOffset="4" />
+        </Target>
+    </Targets>
+</Layout>

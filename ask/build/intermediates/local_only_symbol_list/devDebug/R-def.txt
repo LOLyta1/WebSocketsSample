@@ -1,0 +1,9 @@
+R_DEF: Internal format may change without notice
+local
+id askFragment
+id getAskBTN
+id nav_ask
+id stopBTN
+layout fragment_ask
+layout item_odd
+navigation nav_ask

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3">
+    <dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main$Generated"
+        generated="true"
+        ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~">
+        <source path="C:\Users\Nata\AndroidStudioProjects\WebSockets\bid\src\main\res" />
+        <source
+            path="C:\Users\Nata\AndroidStudioProjects\WebSockets\bid\build\generated\res\rs\dev\debug" />
+        <source
+            path="C:\Users\Nata\AndroidStudioProjects\WebSockets\bid\build\generated\res\resValues\dev\debug" />
+    </dataSet>
+    <dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main"
+        generated-set="main$Generated"
+        ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~">
+        <source path="C:\Users\Nata\AndroidStudioProjects\WebSockets\bid\src\main\res">
+            <file name="fragment_bid"
+                path="C:\Users\Nata\AndroidStudioProjects\WebSockets\bid\src\main\res\layout\fragment_bid.xml"
+                qualifiers="" type="layout" />
+            <file name="nav_bid"
+                path="C:\Users\Nata\AndroidStudioProjects\WebSockets\bid\src\main\res\navigation\nav_bid.xml"
+                qualifiers="" type="navigation" />
+            <file
+                path="C:\Users\Nata\AndroidStudioProjects\WebSockets\bid\src\main\res\values\strings.xml"
+                qualifiers="" />
+        </source>
+        <source
+            path="C:\Users\Nata\AndroidStudioProjects\WebSockets\bid\build\generated\res\rs\dev\debug" />
+        <source
+            path="C:\Users\Nata\AndroidStudioProjects\WebSockets\bid\build\generated\res\resValues\dev\debug" />
+    </dataSet>
+    <dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="dev$Generated"
+        generated="true"
+        ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~">
+        <source path="C:\Users\Nata\AndroidStudioProjects\WebSockets\bid\src\dev\res" />
+    </dataSet>
+    <dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="dev"
+        generated-set="dev$Generated"
+        ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~">
+        <source path="C:\Users\Nata\AndroidStudioProjects\WebSockets\bid\src\dev\res" />
+    </dataSet>
+    <dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug$Generated"
+        generated="true"
+        ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~">
+        <source path="C:\Users\Nata\AndroidStudioProjects\WebSockets\bid\src\debug\res" />
+    </dataSet>
+    <dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug"
+        generated-set="debug$Generated"
+        ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~">
+        <source path="C:\Users\Nata\AndroidStudioProjects\WebSockets\bid\src\debug\res" />
+    </dataSet>
+    <dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="devDebug$Generated"
+        generated="true"
+        ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~">
+        <source path="C:\Users\Nata\AndroidStudioProjects\WebSockets\bid\src\devDebug\res" />
+    </dataSet>
+    <dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="devDebug"
+        generated-set="devDebug$Generated"
+        ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~">
+        <source path="C:\Users\Nata\AndroidStudioProjects\WebSockets\bid\src\devDebug\res" />
+    </dataSet>
+    <mergedItems />
+</merger>
